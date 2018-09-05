@@ -138,7 +138,7 @@ loaded from the internet.
 
 10. To optionally allow access to the app from other computers on the same
     network, open port 8080 on your laptop's firewall.  Use this option with
-    care; while your have the port open and the VM running, anyone on the same
+    care; while you have the port open and the VM running, anyone on the same
     network will be able to see (and possibly plagiarize) your source code.
 
 11. To run the app, open on of the following URLs:
