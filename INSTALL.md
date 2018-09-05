@@ -141,7 +141,7 @@ loaded from the internet.
     care; while you have the port open and the VM running, anyone on the same
     network will be able to see (and possibly plagiarize) your source code.
 
-11. To run the app, open on of the following URLs:
+11. To run the app, open one of the following URLs:
 
     *   <http://localhost/~cse/soft260_project/index.html> (from within your
         VM),
