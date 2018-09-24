@@ -43,8 +43,7 @@ method happy_next_arrival(route: Route, vertex: Vertex, minimum: real) returns (
   var bus := undefinedBus();
   if has(route, vertex) {
     while i < |buses|
-    invariant 0 <= i <= |buses|
-
+      invariant 0 <= i <= |buses|
     {
       if !isStopping(buses[i]) {
         var eta := getETA(buses[i], vertex, minimum);
