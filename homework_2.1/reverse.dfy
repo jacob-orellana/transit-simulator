@@ -6,9 +6,9 @@ method reverse<T>(input: seq<T>) returns (result: seq<T>)
   var i := |input| - 1;
   var j := 0;
   while i >= 0
-    invariant 0 <= i <= |input|
+    invariant -1 <= i <= |input|
   {
-    final := final + input[i];
+    final := final + [input[i]];
     i := i - 1;
     j := j + 1;
   }
