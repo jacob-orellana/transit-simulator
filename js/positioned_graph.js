@@ -27,16 +27,8 @@ function toDirection([dx, dy], referenceDirection = undefined) {
 }
 
 function toUnit([dx, dy]) {
-  console.assert(dx !== 0 || dy !== 0,
-    'Applied to nonzero vectors');
   const magnitude = toMagnitude([dx, dy]);
-  const result = [dx / magnitude, dy / magnitude];
-  const square = (Math.pow(result[0], 2) + Math.pow(result[1], 2));
-  console.assert(square >= .999,
-    'The sum of the squares falls between .999');
-  console.assert(square <= 1.001,
-    'The sum of the squares is less than 1.001');
-  return result;
+  return [dx / magnitude, dy / magnitude];
 }
 
 function toUnitNormal(first, second) {

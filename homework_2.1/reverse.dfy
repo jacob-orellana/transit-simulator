@@ -1,6 +1,6 @@
 method reverse<T>(input: seq<T>) returns (result: seq<T>)
   ensures |input| == |result| // the input list and the result list have the same length
-  ensures forall x :: 0 <= x <= (|input|-1) ==> result[x] == input[(|input| - 1 - x)] // every element found in result
+  ensures forall x :: x >= 0 && x <= (|input|-1) ==> result[x] == input[(|input| - 1 - x)] // every element found in result
   {
   var final := [];
   var i := |input| - 1;
