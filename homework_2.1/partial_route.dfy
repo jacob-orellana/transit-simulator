@@ -26,20 +26,25 @@ function method shortestUndirectedPath(graph: InducedGraph<Vertex>, source: Vert
 method update(route: Route, vertices: seq<Vertex>, vertex: Vertex) returns (result: seq<Vertex>)
 {
   if |vertices| == 0 {
-    if route == undefinedRoute() || core(route) {
-      vertices := [vertex];
+    if route == undefinedRoute() || vertex in core(route){
+      var vertices := [vertex];
     }
   } else {
     var index := indexIn(vertex, vertices);
     if index == 0 || (route == undefinedRoute() && index == 0 && |vertices| > 1) {
       var source := vertices[0];
-      var induced := createInducedGraph(vertex)
-      var path = shortestUndirectedPath(induced, source, (otherVertex) => otherVertex === vertex);
-      if (path !== undefined) {
-        this.vertices.push(...path.slice(1));
+
+
+
+      var vertexPredicate := otherVertex => (otherVertex == source || otherVertex == vertex ||
+      !((route != undefinedRoute() && otherVertex in core(route)) || otherVertex in vertices));
+      var induced := createInducedGraph(vertexPredicate);
+      var path := shortestUndirectedPath(induced, source, (otherVertex) => otherVertex == vertex);
+      if path != undefinedPath() {
+        vertices.add(path[1]);
       }
-    } else if (index === 0) {
-      this.vertices = [];
+    } else if (index == 0) {
+      vertices := [];
     } else {
       this.vertices.splice(index + 1, Infinity);
     }
