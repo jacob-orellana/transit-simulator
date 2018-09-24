@@ -10,9 +10,9 @@ function method getETA(bus: Bus, vertex: Vertex, minimum: real): real
   ensures minimum <= getETA(bus, vertex, minimum) < infinity();
 
 method next_arrival(route: Route, vertex: Vertex, minimum: real) returns (result: Bus, bestETA: real)
-  requires minimum := infinity()
+  requires minimum := infinity();
   ensures !exists vertex | vertex in Route :: result := undefinedBus() && bestETA :: infinity()
-  ensures exists vertex | vertex in Route :: bestETA <= minimum
+  ensures exists vertex | vertex in Route :: bestETA <= minimum;
 {
   if (result == undefined() && bestETA == infinity()) {
     if (route,has(vertex)) {
