@@ -35,7 +35,10 @@ method sad_next_arrival(route: Route, vertex: Vertex, minimum: real) returns (re
 
 method happy_next_arrival(route: Route, vertex: Vertex, minimum: real) returns (result: Bus, bestETA: real)
   requires has(route, vertex) == true
+  requires minimum < infinity()
   ensures bestETA >= minimum
+  ensures forall bus | bus in busesOn(route) :: getETA(result, vertex, minimum) <= getETA(bus, vertex, minimum)
+  ensures forall bus | bus in busesOn(route) && !isStopping(bus) :: getETA(bus, vertex, minimum) >= minimum
 {
   var buses := busesOn(route);
   var i := 0;
@@ -43,8 +46,12 @@ method happy_next_arrival(route: Route, vertex: Vertex, minimum: real) returns (
   var bus := undefinedBus();
   if has(route, vertex) {
     while i < |buses|
-    invariant 0 <= i <= |buses|
-    
+      invariant i <= |buses|
+      // invariant best != infinity() ==> |buses| > 0
+      // invariant bus != undefinedBus() ==> |buses| > 0
+      invariant best >= minimum
+      invariant bus != undefinedBus() ==> forall currentBus | currentBus in buses :: getETA(currentBus, vertex, minimum) >= getETA(bus, vertex, minimum)
+      invariant bus != undefinedBus() ==> forall currentBus | currentBus in buses && !isStopping(currentBus) :: getETA(currentBus, vertex, minimum) >= minimum
     {
       if !isStopping(buses[i]) {
         var eta := getETA(buses[i], vertex, minimum);
