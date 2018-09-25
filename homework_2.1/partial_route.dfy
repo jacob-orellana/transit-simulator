@@ -27,7 +27,8 @@ method update(route: Route, vertices: seq<Vertex>, vertex: Vertex) returns (resu
   requires forall index | 0 <= index < |vertices| :: forall index2 | 0 <= index2 < |vertices| && index2 != index :: vertices[index] != vertices[index2]
   requires |vertices| == 1 || |vertices| == 0;
   ensures forall index | 0 <= index < |result| :: forall index2 | 0 <= index2 < |result| && index2 != index :: result[index] != result[index2] || (index == 0 && index2 == |result|-1) || (index2 == 0 && index == |result|-1)
-  ensures result == [];
+  ensures if vertex == vertices[0] then result == [] else result != [];
+  ensures core(route) == {} || vertices[0] in core(route) || (vertices[0] in core(route) && vertices[|vertices|-1] in core(route));
 {
   if |vertices| == 0 {
     if route == undefinedRoute() || vertex in core(route){
