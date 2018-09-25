@@ -24,6 +24,8 @@ function method shortestUndirectedPath(graph: InducedGraph<Vertex>, source: Vert
         graph(result[i]) && forall j | 0 <= j < |result| :: i != j ==> result[i] != result[j])
 
 method update(route: Route, vertices: seq<Vertex>, vertex: Vertex) returns (result: seq<Vertex>)
+  // ensures forall index | 0 <= index < |vertices| :: forall index2 | 0 <= index2 < |vertices| && index2 != index :: vertices[index] != vertices[index2]
+  // ensures |core(route)| == 1 || |vertices| == 0;
 {
   if |vertices| == 0 {
     if route == undefinedRoute() || vertex in core(route){
