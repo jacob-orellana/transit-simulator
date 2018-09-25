@@ -24,6 +24,10 @@ function method shortestUndirectedPath(graph: InducedGraph<Vertex>, source: Vert
         graph(result[i]) && forall j | 0 <= j < |result| :: i != j ==> result[i] != result[j])
 
 method update(route: Route, vertices: seq<Vertex>, vertex: Vertex) returns (result: seq<Vertex>)
+  requires forall index | 0 <= index < |vertices| :: forall index2 | 0 <= index2 < |vertices| && index2 != index :: vertices[index] != vertices[index2]
+  requires |vertices| == 1 || |vertices| == 0;
+  ensures forall index | 0 <= index < |result| :: forall index2 | 0 <= index2 < |result| && index2 != index :: result[index] != result[index2] || (index == 0 && index2 == |result|-1) || (index2 == 0 && index == |result|-1)
+  ensures result == [];
 {
   if |vertices| == 0 {
     if route == undefinedRoute() || vertex in core(route){
@@ -38,12 +42,12 @@ method update(route: Route, vertices: seq<Vertex>, vertex: Vertex) returns (resu
       var induced := createInducedGraph(vertexPredicate);
       var path := shortestUndirectedPath(induced, source, vertex);
       if path != undefinedPath() {
-        var vertices := vertices[|vertices|] == path[1];
+        var vertices := vertices + path[..1];
       }
     } else if (index == 0) {
-      vertices := [];
+       var vertices: seq<int> := [];
     } else {
-      this.vertices.splice(index + 1, Infinity);
+      var vertices := vertices[index + 1..];
     }
   }
 }
