@@ -38,12 +38,12 @@ method update(route: Route, vertices: seq<Vertex>, vertex: Vertex) returns (resu
       var induced := createInducedGraph(vertexPredicate);
       var path := shortestUndirectedPath(induced, source, vertex);
       if path != undefinedPath() {
-        var vertices := vertices[|vertices|] == path[1];
+        var vertices := vertices + path[..1];
       }
     } else if (index == 0) {
-      vertices := [];
+       var vertices: seq<int> := [];
     } else {
-      this.vertices.splice(index + 1, Infinity);
+      var vertices := vertices[index + 1..];
     }
   }
 }
