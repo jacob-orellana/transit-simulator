@@ -81,7 +81,36 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
         if (result !== undefined) {
           console.assert(result[0] === source);
           console.assert(destinationPredicate(result[result.length - 1]) === true);
-          console.assert(result.every())
+          console.assert(result.every((n) => {
+            const index = result.indexOf(n);
+            if (index === 0) {
+              const neighborTopIndex = 1;
+              const neighborBottomIndex = neighborTopIndex;
+            } else if (index === result[result.length - 1]) {
+              const neighborTopIndex = result.length - 2;
+              const neighborBottomIndex = neighborTopIndex;
+            } else {
+              const neighborTopIndex = index + 1;
+              const neighborBottomIndex = index - 1;
+            }
+            if (graph.getNeighbors(n).contains(result[neighborTopIndex]) && graph.getNeighbors(n).contains(result[neighborBottomIndex])) {
+              return false;
+            }
+            return true;
+          }));
+          console.assert(() => {
+            for (const val of result) {
+              for (const vul of result) {
+                if (val === vul){
+                  continue;
+                } else if (val.has(projection(vul))){
+                  return false;
+                }
+              }
+            }
+            return true;
+          });
+
           return result;
         }
       }
@@ -89,8 +118,4 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
     return undefined;
   }
   return helper();
-}
-
-function helper() {
-  
 }
