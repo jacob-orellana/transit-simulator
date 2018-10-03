@@ -111,3 +111,35 @@ QUnit.test('finding a path from the last vertex with a shortcut available', (ass
   // the search should find the shortest path in terms of number of vertices, not total weighted length
   assert.deepEqual(shortestUndirectedPath(graph, 'c', (vertex) => vertex === 'c'), [['c', 'b'], ['b', 'a']]);
 });
+
+QUnit.test('first weighted graph test case for projections', (assert) => {
+  const graph = new UndirectedGraph();
+  graph.addVertex('s');
+  graph.addVertex('t');
+  graph.addVertex('t\'');
+  graph.addEdge('s', new UndirectedEdge(2), 't\'');
+  graph.addEdge('s', new UndirectedEdge(1), 't');
+  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), 't\'', ['s', 't']);
+});
+
+QUnit.test('second weighted graph test case for projections', (assert) => {
+  const graph = new UndirectedGraph();
+  graph.addVertex('s');
+  graph.addVertex('t');
+  graph.addVertex('t\'');
+  graph.addEdge('s', new UndirectedEdge(1), 't\'');
+  graph.addEdge('s', new UndirectedEdge(2), 't');
+  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), 't\'', undefined);
+});
+
+QUnit.test('third weighted graph test case for projections', (assert) => {
+  const graph = new UndirectedGraph();
+  graph.addVertex('s');
+  graph.addVertex('t');
+  graph.addVertex('t\'');
+  graph.addVertex('c');
+  graph.addEdge('c', new UndirectedEdge(1), 't\'');
+  graph.addEdge('c', new UndirectedEdge(2), 't');
+  graph.addEdge('s', new UndirectedEdge(1), 'c');
+  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), 't\'', undefined);
+});
