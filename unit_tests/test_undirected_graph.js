@@ -88,7 +88,7 @@ QUnit.test('find a path from a vertex to a neighbor with a shortcut available', 
   graph.addEdge('b', new UndirectedEdge(7), 'c');
   graph.addEdge('a', new UndirectedEdge(10), 'c');
   // the search should find the shortest path in terms of number of vertices, not total weighted length
-  assert.deepEqual(shortestUndirectedPath(graph, 'a', (vertex) => vertex === 'c'), ['a', 'c']);
+  assert.deepEqual(shortestUndirectedPath(graph, 'a', (vertex) => vertex === 'c'), [['a', 'b'], ['b', 'c']]);
 });
 
 QUnit.test('find a nonexistent path', (assert) => {
@@ -98,4 +98,16 @@ QUnit.test('find a nonexistent path', (assert) => {
   graph.addVertex('c');
   graph.addEdge('b', new UndirectedEdge(7), 'c');
   assert.deepEqual(shortestUndirectedPath(graph, 'a', (vertex) => vertex === 'c'), undefined);
+});
+
+QUnit.test('finding a path from the last vertex with a shortcut available', (assert) => {
+  const graph = new UndirectedGraph();
+  graph.addVertex('a');
+  graph.addVertex('b');
+  graph.addVertex('c');
+  graph.addEdge('a', new UndirectedEdge(2), 'b');
+  graph.addEdge('b', new UndirectedEdge(7), 'c');
+  graph.addEdge('a', new UndirectedEdge(10), 'c');
+  // the search should find the shortest path in terms of number of vertices, not total weighted length
+  assert.deepEqual(shortestUndirectedPath(graph, 'c', (vertex) => vertex === 'c'), [['c', 'b'], ['b', 'a']]);
 });
