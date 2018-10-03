@@ -83,17 +83,19 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
           console.assert(destinationPredicate(result[result.length - 1]) === true);
           console.assert(result.every((n) => {
             const index = result.indexOf(n);
+            let neighborTopIndex = 0;
+            let neighborBottomIndex = 0;
             if (index === 0) {
-              const neighborTopIndex = 1;
-              const neighborBottomIndex = neighborTopIndex;
+              neighborTopIndex = 1;
+              neighborBottomIndex = neighborTopIndex;
             } else if (index === result[result.length - 1]) {
-              const neighborTopIndex = result.length - 2;
-              const neighborBottomIndex = neighborTopIndex;
+              neighborTopIndex = result.length - 2;
+              neighborBottomIndex = neighborTopIndex;
             } else {
-              const neighborTopIndex = index + 1;
-              const neighborBottomIndex = index - 1;
+              neighborTopIndex = index + 1;
+              neighborBottomIndex = index - 1;
             }
-            if (graph.getNeighbors(n).contains(result[neighborTopIndex]) && graph.getNeighbors(n).contains(result[neighborBottomIndex])) {
+            if (graph.getNeighbors(n).includes(result[neighborTopIndex]) && graph.getNeighbors(n).includes(result[neighborBottomIndex])) {
               return false;
             }
             return true;
