@@ -80,9 +80,9 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
     visited.add(projection(top));
     for (const neighbor of graph.getNeighbors(top)) {
       if (!visited.has(projection(neighbor))) {
-        stack.push(neighbor);
+        queue.enqueue(neighbor);
         const result = helper();
-        stack.pop();
+        queue.dequeue();
         if (result !== undefined) {
           console.assert(result[0] === source);
           console.assert(destinationPredicate(result[result.length - 1]) === true);
