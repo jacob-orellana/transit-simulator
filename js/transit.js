@@ -302,6 +302,10 @@ class Route {
       eta: bestETA,
     };
   }
+
+  toString() {
+    return `Route ${this.city.routes.indexOf(this)}`;
+  }
 }
 
 class Bus extends Agent {
@@ -516,6 +520,10 @@ class PlanningVertex {
     this.destination = destination;
     this.eta = eta;
     this.isStarter = isStarter;
+  }
+
+  toString() {
+    return `PlanningVertex(${this.route}, ${this.destination}, ${this.eta}, ${this.isStarter})`;
   }
 }
 
