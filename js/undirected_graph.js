@@ -1,5 +1,5 @@
 /* exported UndirectedEdge UndirectedGraph shortestUndirectedPath */
-/* globals identity */
+/* globals identity PriorityQueue */
 
 class UndirectedEdge {
   constructor(weight) {
@@ -65,15 +65,20 @@ class UndirectedGraph {
 }
 
 function shortestUndirectedPath(graph, source, destinationPredicate, projection = identity) {
-  const stack = [source];
+  const priority = new Map();
+  const distance = new Map();
+  const stack = new PriorityQueue((element) => priority.get(`${element}`));
+  stack.enqueue([undefined, source]);
   const visited = new Set();
   function helper() {
-    const endpoint = stack.top();
-    if (destinationPredicate(endpoint)) {
+    const [from, to] = stack.dequeue();
+    console.log(from);
+    console.log(to);
+    if (destinationPredicate(top)) {
       return stack.concat();
     }
-    visited.add(projection(endpoint));
-    for (const neighbor of graph.getNeighbors(endpoint)) {
+    visited.add(projection(top));
+    for (const neighbor of graph.getNeighbors(top)) {
       if (!visited.has(projection(neighbor))) {
         stack.push(neighbor);
         const result = helper();
