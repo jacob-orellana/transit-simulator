@@ -65,16 +65,17 @@ class UndirectedGraph {
 }
 
 function shortestUndirectedPath(graph, source, destinationPredicate, projection = identity) {
-  const queue = new PriorityQueue(projection);
+  const queue = new PriorityQueue();
   queue.enqueue(source);
+  console.log(queue);
   const visited = new Set();
   function helper() {
-    const endpoint = queue.dequeue();
-    if (destinationPredicate(endpoint)) {
+    const top = queue.dequeue();
+    if (destinationPredicate(top.destination.vertex)) {
       return queue.concat();
     }
-    visited.add(projection(endpoint));
-    for (const neighbor of graph.getNeighbors(endpoint)) {
+    visited.add(projection(top));
+    for (const neighbor of graph.getNeighbors(top)) {
       if (!visited.has(projection(neighbor))) {
         queue.enqueue(neighbor);
         const result = helper();
