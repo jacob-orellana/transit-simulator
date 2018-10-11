@@ -187,7 +187,6 @@ QUnit.test('seventh weighted graph test case for projections', (assert) => {
   const graph = new UndirectedGraph();
   graph.addVertex('s');
   graph.addVertex('t');
-  graph.addVertex('t\'');
   graph.addVertex('c');
   graph.addVertex('u');
   graph.addVertex('u\'');
@@ -195,5 +194,5 @@ QUnit.test('seventh weighted graph test case for projections', (assert) => {
   graph.addEdge('s', new UndirectedEdge(1), 'c');
   graph.addEdge('s', new UndirectedEdge(4), 'u\'');
   graph.addEdge('u\'', new UndirectedEdge(2), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), 't\'', undefined);
+  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 'u\'' || vertex === 'u'), undefined);
 });
