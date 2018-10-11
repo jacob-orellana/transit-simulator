@@ -63,26 +63,18 @@ class UndirectedGraph {
     return this.adjacencyMatrix[sourceIndex][destinationIndex];
   }
 }
-function heuristic(cell, destination) {
-  // const x = Math.abs(destination.eta - cell.eta);
-  return 1;
-}
 
 function shortestUndirectedPath(graph, source, destinationPredicate, projection = identity) {
   const projections = [];
   let destination = undefined;
   const backpointers = new Map();
   const priority = new Map();
-  // const distance = new Map();
   const worklist = new PriorityQueue((element) => priority.get(`${[element]}`));
-  priority.set(`${[undefined, source]}`, 0 + heuristic(source, source.destination));
-  // distance.set(`${[undefined, source]}`, 0);
+  priority.set(`${[undefined, source]}`, 0);
   worklist.enqueue([undefined, source]);
-  // console.log(source);
-  while (worklist.elements !== []) {
+  while (worklist.peek() !== undefined) {
     const [from, to] = worklist.dequeue();
     const prior = priority.get(`${[from, to]}`);
-    // const dist = distance.get(`${[from, to]}`);
     if (destinationPredicate(to)) {
       destination = to;
       backpointers.set(to, from);
@@ -94,22 +86,14 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
     backpointers.set(to, from);
     projections.push(projection(to));
     for (const neighbor of graph.getNeighbors(to)) {
-      // distance.set(`${[to, neighbor]}`, dist + 1);
       priority.set(`${[to, neighbor]}`, prior + graph.getEdge(to, neighbor).weight);
-      // console.log(neighbor);
       worklist.enqueue([to, neighbor]);
     }
   }
   const result = [];
-  // console.log(backpointers);
-  // console.log(destination);
   for (let current = destination; current !== undefined; current = backpointers.get(current)) {
-    // console.log('this');
     result.push(current);
-    // console.log(current);
   }
-  // console.log(result);
-  // console.log(destination);
   if (result === []) {
     return undefined;
   }
