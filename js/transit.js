@@ -188,6 +188,9 @@ class Route {
     this._addArc(secondVertex, firstVertex);
     city.restart();
   }
+  toString() {
+    return `Route ${this.city.routes.indexOf(this)}`;
+  }
 
   _maybeDispose() {
     if (this.moribund && this.buses.size === 0) {
@@ -516,6 +519,9 @@ class PlanningVertex {
     this.destination = destination;
     this.eta = eta;
     this.isStarter = isStarter;
+  }
+  toString() {
+    return `${this.route} ${this.destination} ${this.eta} ${this.isStarter}`;
   }
 }
 
