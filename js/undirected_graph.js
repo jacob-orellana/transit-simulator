@@ -65,64 +65,42 @@ class UndirectedGraph {
 }
 
 function shortestUndirectedPath(graph, source, destinationPredicate, projection = identity) {
-  const priority = new Map();
-  const distance = new Map();
-  const stack = new PriorityQueue((element) => priority.get(`${element}`));
-  stack.enqueue([undefined, source]);
-  const visited = new Set();
-  function helper() {
-    const [from, to] = stack.dequeue();
-    console.log(from);
-    console.log(to);
-    if (destinationPredicate(top)) {
-      return stack.concat();
+  const backpointers = new Map();
+  const distances = new Map();
+  const projections = [];
+  const worklist = new PriorityQueue((element) => distances.get(`${[element]}`));
+  let recent = undefined;
+  // let endpoint = false;
+  const result = [];
+  distances.set(`${[undefined, source]}`, -1);
+  worklist.enqueue([undefined, source]);
+  projections.push(projection(source));
+  while (worklist.peek() !== undefined) {
+    const [from, to] = worklist.dequeue();
+    recent = to;
+    const distance = distances.get(`${[from, to]}`);
+    distances.delete(`${[from, to]}`);
+    if (backpointers.has(to)){
+      continue;
     }
-    visited.add(projection(top));
-    for (const neighbor of graph.getNeighbors(top)) {
-      if (!visited.has(projection(neighbor))) {
-        queue.enqueue(neighbor);
-        const result = helper();
-        queue.dequeue();
-        if (result !== undefined) {
-          console.assert(result[0] === source);
-          console.assert(destinationPredicate(result[result.length - 1]) === true);
-          console.assert(result.every((n) => {
-            const index = result.indexOf(n);
-            let neighborTopIndex = 0;
-            let neighborBottomIndex = 0;
-            if (index === 0) {
-              neighborTopIndex = 1;
-              neighborBottomIndex = neighborTopIndex;
-            } else if (index === result[result.length - 1]) {
-              neighborTopIndex = result.length - 2;
-              neighborBottomIndex = neighborTopIndex;
-            } else {
-              neighborTopIndex = index + 1;
-              neighborBottomIndex = index - 1;
-            }
-            if (graph.getNeighbors(n).includes(result[neighborTopIndex]) && graph.getNeighbors(n).includes(result[neighborBottomIndex])) {
-              return false;
-            }
-            return true;
-          }));
-          console.assert(() => {
-            for (const val of result) {
-              for (const vul of result) {
-                if (val === vul){
-                  continue;
-                } else if (val.has(projection(vul))){
-                  return false;
-                }
-              }
-            }
-            return true;
-          });
-
-          return result;
-        }
+    backpointers.set(to, from);
+    projections.push(projection(to));
+    if (destinationPredicate(to)) {
+      // endpoint = true;
+      break;
+    }
+    for (const incidence of graph.getNeighbors(to)) {
+      if (!projections.includes(projection(incidence))) {
+        distances.set(`${[to, incidence]}`, distance + graph.getEdge(to, incidence).weight);
+        worklist.enqueue([to, incidence]);
       }
     }
-    return undefined;
   }
-  return helper();
+  // if (endpoint === true) {
+  //   return undefined;
+  // }
+  for (let step = projection(recent); step !== undefined; step = backpointers.get(step)) {
+    result.push(step);
+  }
+  return result.reverse();
 }
