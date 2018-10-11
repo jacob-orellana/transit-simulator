@@ -99,7 +99,7 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
   // if (endpoint === true) {
   //   return undefined;
   // }
-  for (let step = projection(recent); step !== undefined; step = backpointers.get(step)) {
+  for (let step = recent; step !== undefined; step = backpointers.get(step)) {
     result.push(step);
   }
   return result.reverse();
