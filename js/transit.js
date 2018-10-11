@@ -192,10 +192,6 @@ class Route {
     return `Route ${this.city.routes.indexOf(this)}`;
   }
 
-  toString() {
-    return `Route ${this.city.routes.indexOf(this)}`;
-  }
-
   _maybeDispose() {
     if (this.moribund && this.buses.size === 0) {
       this.city.routes[this.city.routes.indexOf(this)] = undefined;
@@ -526,11 +522,7 @@ class PlanningVertex {
   }
   toString() {
     return `${this.route} ${this.destination} ${this.eta} ${this.isStarter}`;
-<<<<<<< HEAD
   }
-=======
-}
->>>>>>> 3759cf01e3a4ea15a9e3684e5bfeb86857112bab
 }
 
 class PlanningEdge {

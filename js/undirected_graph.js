@@ -28,7 +28,7 @@ class UndirectedGraph {
     console.assert(this.adjacencyMatrix.length === this.vertices.length, 'Vertex count does not match adjacency matrix width.');
   }
 
-  addEdge (source, edge, destination) {
+  addEdge(source, edge, destination) {
     const sourceIndex = this.vertices.indexOf(source);
     console.assert(sourceIndex >= 0, `Edge ${edge} added to nonexistent vertex ${source}.`);
     const destinationIndex = this.vertices.indexOf(destination);
@@ -67,17 +67,22 @@ function heuristic(cell, destination) {
   // const x = Math.abs(destination.eta - cell.eta);
   return 1;
 }
+
 function shortestUndirectedPath(graph, source, destinationPredicate, projection = identity) {
   const projections = [];
   let destination = undefined;
   const backpointers = new Map();
   const priority = new Map();
+  // const distance = new Map();
   const worklist = new PriorityQueue((element) => priority.get(`${[element]}`));
   priority.set(`${[undefined, source]}`, 0 + heuristic(source, source.destination));
+  // distance.set(`${[undefined, source]}`, 0);
   worklist.enqueue([undefined, source]);
+  // console.log(source);
   while (worklist.elements !== []) {
     const [from, to] = worklist.dequeue();
     const prior = priority.get(`${[from, to]}`);
+    // const dist = distance.get(`${[from, to]}`);
     if (destinationPredicate(to)) {
       destination = to;
       backpointers.set(to, from);
@@ -89,7 +94,9 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
     backpointers.set(to, from);
     projections.push(projection(to));
     for (const neighbor of graph.getNeighbors(to)) {
+      // distance.set(`${[to, neighbor]}`, dist + 1);
       priority.set(`${[to, neighbor]}`, prior + graph.getEdge(to, neighbor).weight);
+      // console.log(neighbor);
       worklist.enqueue([to, neighbor]);
     }
   }
