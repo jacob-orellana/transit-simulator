@@ -129,7 +129,7 @@ QUnit.test('second weighted graph test case for projections', (assert) => {
   graph.addVertex('t\'');
   graph.addEdge('s', new UndirectedEdge(1), 't\'');
   graph.addEdge('s', new UndirectedEdge(2), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), undefined);
+  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 't\'' || vertex === 't'), undefined);
 });
 
 QUnit.test('third weighted graph test case for projections', (assert) => {
@@ -141,7 +141,7 @@ QUnit.test('third weighted graph test case for projections', (assert) => {
   graph.addEdge('c', new UndirectedEdge(1), 't\'');
   graph.addEdge('c', new UndirectedEdge(2), 't');
   graph.addEdge('s', new UndirectedEdge(1), 'c');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), 't\'', undefined);
+  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 't\'' || vertex === 't'), undefined);
 });
 
 QUnit.test('fourth weighted graph test case for projections', (assert) => {
@@ -165,7 +165,7 @@ QUnit.test('fifth weighted graph test case for projections', (assert) => {
   graph.addEdge('s', new UndirectedEdge(1), 'u');
   graph.addEdge('u', new UndirectedEdge(2), 't\'');
   graph.addEdge('s', new UndirectedEdge(4), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), 't\'', undefined);
+  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', 't\''), undefined);
 });
 
 QUnit.test('sixth weighted graph test case for projections', (assert) => {
