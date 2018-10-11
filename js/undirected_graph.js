@@ -67,40 +67,74 @@ class UndirectedGraph {
 function shortestUndirectedPath(graph, source, destinationPredicate, projection = identity) {
   const backpointers = new Map();
   const distances = new Map();
-  const projections = [];
+  const visited = new Set();
+  let found = false;
+  let destination = source;
   const worklist = new PriorityQueue((element) => distances.get(`${[element]}`));
-  let recent = undefined;
-  // let endpoint = false;
-  const result = [];
   distances.set(`${[undefined, source]}`, -1);
   worklist.enqueue([undefined, source]);
-  projections.push(projection(source));
   while (worklist.peek() !== undefined) {
     const [from, to] = worklist.dequeue();
-    recent = to;
     const distance = distances.get(`${[from, to]}`);
     distances.delete(`${[from, to]}`);
     if (backpointers.has(to)){
       continue;
     }
     backpointers.set(to, from);
-    projections.push(projection(to));
+    destination = to;
     if (destinationPredicate(to)) {
-      // endpoint = true;
+      destination = to;
+      found = true;
       break;
     }
     for (const incidence of graph.getNeighbors(to)) {
-      if (!projections.includes(projection(incidence))) {
+      if (!visited.has(projection(incidence))) {
         distances.set(`${[to, incidence]}`, distance + graph.getEdge(to, incidence).weight);
         worklist.enqueue([to, incidence]);
+        visited.add(projection(incidence));
       }
     }
   }
-  // if (endpoint === true) {
-  //   return undefined;
-  // }
-  for (let step = recent; step !== undefined; step = backpointers.get(step)) {
-    result.push(step);
+  if (found === false) {
+    return undefined;
   }
-  return result.reverse();
+  let result = [];
+  for (let current = destination; current !== undefined; current = backpointers.get(current)) {
+    result.push(current);
+  }
+  result = result.reverse();
+  console.assert(result[0] === source);
+  console.assert(destinationPredicate(result[result.length - 1]) === true);
+  console.assert(result.every((n) => {
+    const index = result.indexOf(n);
+    let neighborTopIndex = 0;
+    let neighborBottomIndex = 0;
+    if (index === 0) {
+      neighborTopIndex = 1;
+      neighborBottomIndex = neighborTopIndex;
+    } else if (index === result[result.length - 1]) {
+      neighborTopIndex = result.length - 2;
+      neighborBottomIndex = neighborTopIndex;
+    } else {
+      neighborTopIndex = index + 1;
+      neighborBottomIndex = index - 1;
+    }
+    if (graph.getNeighbors(n).includes(result[neighborTopIndex]) && graph.getNeighbors(n).includes(result[neighborBottomIndex])) {
+      return false;
+    }
+    return true;
+  }));
+  console.assert(() => {
+    for (const val of result) {
+      for (const vul of result) {
+        if (val === vul){
+          continue;
+        } else if (val.has(projection(vul))){
+          return false;
+        }
+      }
+    }
+    return true;
+  });
+  return result;
 }
