@@ -153,7 +153,7 @@ QUnit.test('fourth weighted graph test case for projections', (assert) => {
   graph.addEdge('s', new UndirectedEdge(1), 'u');
   graph.addEdge('s', new UndirectedEdge(2), 'u\'');
   graph.addEdge('u\'', new UndirectedEdge(2), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), 'u\'', undefined);
+  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 'u\'' || vertex === 'u'), undefined);
 });
 
 QUnit.test('fifth weighted graph test case for projections', (assert) => {
