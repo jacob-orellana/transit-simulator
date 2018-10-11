@@ -72,12 +72,14 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
   const worklist = new PriorityQueue((element) => priority.get(`${[element]}`));
   priority.set(`${[undefined, source]}`, 0);
   worklist.enqueue([undefined, source]);
+  let found = false;
   while (worklist.peek() !== undefined) {
     const [from, to] = worklist.dequeue();
     const prior = priority.get(`${[from, to]}`);
     if (destinationPredicate(to)) {
       destination = to;
       backpointers.set(to, from);
+      found = true;
       break;
     }
     if (projections.includes(projection(to))) {
@@ -90,12 +92,12 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
       worklist.enqueue([to, neighbor]);
     }
   }
+  if (!found) {
+    return undefined;
+  }
   const result = [];
   for (let current = destination; current !== undefined; current = backpointers.get(current)) {
     result.push(current);
-  }
-  if (result === []) {
-    return undefined;
   }
   return result.reverse();
 }
