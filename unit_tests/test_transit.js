@@ -1008,24 +1008,24 @@ QUnit.test('simulate a passenger continuing to ride after the bus they are ridin
   x.start();
   city.addEvent(new SimulationEvent(2, () => undefined));
   let time = city.step();
-  assert.deepEqual(time, 1.5);
-  assert.deepEqual(x.vertex, d);
+  assert.deepEqual(time, 1);
+  assert.deepEqual(x.vertex, a);
   time = city.step();
   assert.deepEqual(time, 2);
   route.patch(a, c);
   time = city.step();
-  assert.deepEqual(time, 3);
+  assert.deepEqual(time, 2.5);
+  assert.deepEqual(x.vertex, d);
+  time = city.step();
+  assert.deepEqual(time, 3.5);
+  assert.deepEqual(x.vertex, d);
+  time = city.step();
+  assert.deepEqual(time, 5);
   assert.deepEqual(x.vertex, b);
+  assert.deepEqual(passenger.vertex, undefined);
   time = city.step();
-  assert.deepEqual(time, 6);
-  assert.deepEqual(x.vertex, c);
-  time = city.step();
-  assert.deepEqual(time, 14);
-  assert.deepEqual(x.vertex, a);
-  assert.deepEqual(passenger.vertex, b);
-  time = city.step();
-  assert.deepEqual(time, 19);
-  assert.deepEqual(passenger.vertex, c);
+  assert.deepEqual(time, 6.5);
+  assert.deepEqual(passenger.vertex, d);
 });
 
 QUnit.test('simulate a passenger replanning after their bus is stopped while they are at a vertex', (assert) => {
@@ -1266,17 +1266,17 @@ QUnit.test('simulate passengers alighting after the route for the bus they are r
   let time = city.step();
   assert.deepEqual(time, 1);
   assert.deepEqual(x.vertex, a);
-  route.retire();
   time = city.step();
-  assert.deepEqual(time, 14);
-  assert.deepEqual(passenger.vertex, b);
-  assert.deepEqual(companion.vertex, b);
-  assert.deepEqual(route.buses.size, 0);
+  route.retire();
+  assert.deepEqual(time, 2);
+  assert.deepEqual(passenger.vertex, undefined);
+  assert.deepEqual(companion.vertex, undefined);
+  assert.deepEqual(route.buses.size, 1);
   assert.deepEqual(city.routes[0], undefined);
   time = city.step();
-  assert.deepEqual(time, 19);
-  assert.deepEqual(passenger.vertex, c);
-  assert.deepEqual(companion.vertex, c);
+  assert.deepEqual(time, 3);
+  assert.deepEqual(passenger.vertex, undefined);
+  assert.deepEqual(companion.vertex, undefined);
 });
 
 QUnit.test('simulate a passenger replanning after a bus is added at their vertex', (assert) => {
@@ -1417,7 +1417,7 @@ QUnit.test('simulate a passenger replanning after a bus is added elsewhere', (as
   assert.deepEqual(time, 31);
   assert.deepEqual(x.vertex, a); //
   time = city.step();
-  assert.deepEqual(time, 32);
+  assert.deepEqual(time, 34);
   assert.deepEqual(x.vertex, b);
   time = city.step();
   assert.deepEqual(time, 35);
