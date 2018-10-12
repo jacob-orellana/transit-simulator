@@ -1065,7 +1065,7 @@ QUnit.test('simulate a passenger replanning after their bus is stopped while the
   assert.deepEqual(time, 6);
   assert.deepEqual(route.buses.size, 0);
   time = city.step();
-  assert.deepEqual(time, 18);
+  assert.deepEqual(time, 20);
   assert.deepEqual(passenger.vertex, c);
 });
 
@@ -1139,8 +1139,8 @@ QUnit.test('simulate passengers alighting after the bus they are riding is stopp
   x.start();
   city.addEvent(new SimulationEvent(3, () => undefined));
   let time = city.step();
-  assert.deepEqual(time, 3);
-  assert.deepEqual(x.vertex, b);
+  assert.deepEqual(time, 1);
+  assert.deepEqual(x.vertex, a);
   x.stop();
   time = city.step();
   assert.deepEqual(time, 14);
@@ -1190,7 +1190,7 @@ QUnit.test('simulate a passenger replanning after their bus route is retired whi
   assert.deepEqual(route.buses.size, 0);
   assert.deepEqual(city.routes[0], undefined);
   time = city.step();
-  assert.deepEqual(time, 18);
+  assert.deepEqual(time, 20);
   assert.deepEqual(passenger.vertex, c);
 });
 
@@ -1265,8 +1265,8 @@ QUnit.test('simulate passengers alighting after the route for the bus they are r
   x.start();
   city.addEvent(new SimulationEvent(3, () => undefined));
   let time = city.step();
-  assert.deepEqual(time, 3);
-  assert.deepEqual(x.vertex, b);
+  assert.deepEqual(time, 1);
+  assert.deepEqual(x.vertex, a);
   route.retire();
   time = city.step();
   assert.deepEqual(time, 14);
