@@ -95,42 +95,40 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
   if (!found) {
     return undefined;
   }
-  const result = [];
+  let result = [];
   for (let current = destination; current !== undefined; current = backpointers.get(current)) {
     result.push(current);
   }
-  return result.reverse();
+  result = result.reverse();
+  console.assert(result[0] === source, 'first assertion');
+  console.assert(destinationPredicate(result[result.length - 1]) === true, 'second assertion');
+  console.assert(result.every((n) => {
+    const index = result.indexOf(n);
+    let neighborTopIndex = 0;
+    let neighborBottomIndex = 0;
+    if (index === 0) {
+      neighborTopIndex = 1;
+      neighborBottomIndex = neighborTopIndex;
+    } else if (index === result[result.length - 1]) {
+      neighborTopIndex = result.length - 2;
+      neighborBottomIndex = neighborTopIndex;
+    } else {
+      neighborTopIndex = index + 1;
+      neighborBottomIndex = index - 1;
+    }
+    if (graph.getNeighbors(n).includes(result[neighborTopIndex]) && graph.getNeighbors(n).includes(result[neighborBottomIndex])) {
+      return false;
+    }
+    return true;
+  }), 'third assertion');
+  console.assert(result.every((n) => {
+    result.every((m) => {
+      if (n !== m){
+        return projection(n) !== projection(m);
+      }
+      return true;
+    });
+    return true;
+  }), 'fourth assertion');
+  return result;
 }
-// console.assert(result[0] === source);
-// console.assert(destinationPredicate(result[result.length - 1]) === true);
-// console.assert(result.every((n) => {
-//   const index = result.indexOf(n);
-//   let neighborTopIndex = 0;
-//   let neighborBottomIndex = 0;
-//   if (index === 0) {
-//     neighborTopIndex = 1;
-//     neighborBottomIndex = neighborTopIndex;
-//   } else if (index === result[result.length - 1]) {
-//     neighborTopIndex = result.length - 2;
-//     neighborBottomIndex = neighborTopIndex;
-//   } else {
-//     neighborTopIndex = index + 1;
-//     neighborBottomIndex = index - 1;
-//   }
-//   if (graph.getNeighbors(n).includes(result[neighborTopIndex]) && graph.getNeighbors(n).includes(result[neighborBottomIndex])) {
-//     return false;
-//   }
-//   return true;
-// }));
-// console.assert(() => {
-//   for (const val of result) {
-//     for (const vul of result) {
-//       if (val === vul){
-//         continue;
-//       } else if (val.has(projection(vul))){
-//         return false;
-//       }
-//     }
-//   }
-// return true;
-// });
