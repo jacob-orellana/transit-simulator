@@ -691,7 +691,7 @@ QUnit.test('simulate a passenger taking a combined walking/riding path', (assert
   assert.deepEqual(time, 26);
   assert.deepEqual(passenger.vertex, d);
   time = city.step();
-  assert.deepEqual(time, 30);
+  assert.deepEqual(time, 29);
   assert.deepEqual(passenger.vertex, d);
 });
 
