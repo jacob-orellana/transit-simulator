@@ -690,7 +690,7 @@ QUnit.test('simulate a passenger taking a combined walking/riding path', (assert
   time = city.step();
   assert.deepEqual(time, 26);
   assert.deepEqual(passenger.vertex, d);
-  // time = city.step();  The passenger has already reached its destination. There is no need for this last assertion.
+  // time = city.step();
   // assert.deepEqual(time, 30);
   // assert.deepEqual(passenger.vertex, d);
 });
@@ -1273,7 +1273,7 @@ QUnit.test('simulate passengers alighting after the route for the bus they are r
   assert.deepEqual(passenger.vertex, undefined);
   assert.deepEqual(companion.vertex, undefined);
   assert.deepEqual(route.buses.size, 1);
-  assert.deepEqual(city.routes[0], route); // 7
+  assert.deepEqual(city.routes[0], route);
   time = city.step();
   assert.deepEqual(time, 3);
   assert.deepEqual(passenger.vertex, undefined);
@@ -1418,7 +1418,7 @@ QUnit.test('simulate a passenger replanning after a bus is added elsewhere', (as
   assert.deepEqual(time, 31);
   assert.deepEqual(x.vertex, a);
   // These asseration are sometimes failing because the bus is waiting for a passenger but no more passengers are trying get on the bus. The bus has already
-  // completed the route twice and served the purpose of this oracle. These assertions can commented out.
+  // completed the route twice and served the purpose of this oracle. These assertions can be commented out.
   // time = city.step();
   // assert.deepEqual(time, 34);
   // assert.deepEqual(x.vertex, b);
