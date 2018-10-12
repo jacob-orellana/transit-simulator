@@ -582,7 +582,6 @@ QUnit.test('find a nonexistent pedestrian path', (assert) => {
   passenger.source = a;
   passenger.destination = c;
   passenger._plan();
-  console.log(passenger.plan);
   assert.deepEqual(instructions(passenger.plan, city), ['walk to a at time 3']);
 });
 
@@ -677,22 +676,22 @@ QUnit.test('simulate a passenger taking a combined walking/riding path', (assert
   assert.deepEqual(time, 7);
   assert.deepEqual(x.vertex, b);
   time = city.step();
-  assert.deepEqual(time, 14);
+  assert.deepEqual(time, 8);
+  assert.deepEqual(x.vertex, b);
+  time = city.step();
+  assert.deepEqual(time, 15);
   assert.deepEqual(x.vertex, c);
   time = city.step();
-  assert.deepEqual(time, 18);
-  assert.deepEqual(passenger.vertex, c);
+  assert.deepEqual(time, 22);
+  assert.deepEqual(x.vertex, d); // 10
   time = city.step();
-  assert.deepEqual(time, 21);
+  assert.deepEqual(time, 23);
   assert.deepEqual(x.vertex, d);
   time = city.step();
-  assert.deepEqual(time, 28);
-  assert.deepEqual(x.vertex, e);
-  time = city.step();
-  assert.deepEqual(time, 32);
+  assert.deepEqual(time, 26);
   assert.deepEqual(passenger.vertex, d);
   time = city.step();
-  assert.deepEqual(time, 35);
+  assert.deepEqual(time, 30);
   assert.deepEqual(passenger.vertex, d);
 });
 
