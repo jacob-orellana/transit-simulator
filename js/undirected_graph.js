@@ -76,14 +76,14 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
   while (worklist.peek() !== undefined) {
     const [from, to] = worklist.dequeue();
     const prior = priority.get(`${[from, to]}`);
+    if (projections.includes(projection(to))) {
+      continue;
+    }
     if (destinationPredicate(to)) {
       destination = to;
       backpointers.set(to, from);
       found = true;
       break;
-    }
-    if (projections.includes(projection(to))) {
-      continue;
     }
     backpointers.set(to, from);
     projections.push(projection(to));
