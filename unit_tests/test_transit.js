@@ -1140,16 +1140,17 @@ QUnit.test('simulate passengers alighting after the bus they are riding is stopp
   let time = city.step();
   assert.deepEqual(time, 1);
   assert.deepEqual(x.vertex, a);
+  time = city.step();
   x.stop();
   time = city.step();
-  assert.deepEqual(time, 14);
-  assert.deepEqual(passenger.vertex, b);
-  assert.deepEqual(companion.vertex, b);
-  assert.deepEqual(route.buses.size, 0);
+  assert.deepEqual(time, 3);
+  assert.deepEqual(passenger.vertex, undefined);
+  assert.deepEqual(companion.vertex, undefined);
+  assert.deepEqual(route.buses.size, 1);
   time = city.step();
-  assert.deepEqual(time, 19);
-  assert.deepEqual(passenger.vertex, c);
-  assert.deepEqual(companion.vertex, c);
+  assert.deepEqual(time, 5);
+  assert.deepEqual(passenger.vertex, undefined);
+  assert.deepEqual(companion.vertex, undefined);
 });
 
 QUnit.test('simulate a passenger replanning after their bus route is retired while they are at a vertex', (assert) => {
