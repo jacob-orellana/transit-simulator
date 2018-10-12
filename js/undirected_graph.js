@@ -103,32 +103,15 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
   console.assert(result[0] === source, 'first assertion');
   console.assert(destinationPredicate(result[result.length - 1]) === true, 'second assertion');
   console.assert(result.every((n) => {
-    const index = result.indexOf(n);
-    let bool = false;
-    if (result === undefined){
-      return false;
+    if (result === undefined) {
+      return true;
     }
-    const neighbor = result[index + 1];
-    if (graph.getNeighbors(n).includes(neighbor)){
-      bool = true;
+    for (const neighbor of graph.getNeighbors(n)) {
+      if (graph.getEdge(neighbor, n) === undefined) {
+        return false;
+      }
     }
-    return bool;
-    // const index = result.indexOf(n);
-    // let neighborTopIndex = 0;
-    // let neighborBottomIndex = 0;
-    // if (index === 0) {
-    //   neighborTopIndex = 1;
-    //   neighborBottomIndex = neighborTopIndex;
-    // } else if (index === result[result.length - 1]) {
-    //   neighborTopIndex = result.length - 2;
-    //   neighborBottomIndex = neighborTopIndex;
-    // } else {
-    //   neighborTopIndex = index + 1;
-    //   neighborBottomIndex = index - 1;
-    // }
-    // if (graph.getNeighbors(n).includes(result[neighborTopIndex]) && graph.getNeighbors(n).includes(result[neighborBottomIndex])) {
-    //   return false;
-    // }
+    return true;
   }), 'third assertion');
   console.assert(result.every((n) => {
     result.every((m) => {
