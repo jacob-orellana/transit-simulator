@@ -1272,7 +1272,7 @@ QUnit.test('simulate passengers alighting after the route for the bus they are r
   assert.deepEqual(passenger.vertex, undefined);
   assert.deepEqual(companion.vertex, undefined);
   assert.deepEqual(route.buses.size, 1);
-  assert.deepEqual(city.routes[0], undefined);
+  assert.deepEqual(city.routes[0], route); // 7
   time = city.step();
   assert.deepEqual(time, 3);
   assert.deepEqual(passenger.vertex, undefined);
