@@ -104,22 +104,31 @@ function shortestUndirectedPath(graph, source, destinationPredicate, projection 
   console.assert(destinationPredicate(result[result.length - 1]) === true, 'second assertion');
   console.assert(result.every((n) => {
     const index = result.indexOf(n);
-    let neighborTopIndex = 0;
-    let neighborBottomIndex = 0;
-    if (index === 0) {
-      neighborTopIndex = 1;
-      neighborBottomIndex = neighborTopIndex;
-    } else if (index === result[result.length - 1]) {
-      neighborTopIndex = result.length - 2;
-      neighborBottomIndex = neighborTopIndex;
-    } else {
-      neighborTopIndex = index + 1;
-      neighborBottomIndex = index - 1;
-    }
-    if (graph.getNeighbors(n).includes(result[neighborTopIndex]) && graph.getNeighbors(n).includes(result[neighborBottomIndex])) {
+    let bool = false;
+    if (result === undefined){
       return false;
     }
-    return true;
+    const neighbor = result[index + 1];
+    if (graph.getNeighbors(n).includes(neighbor)){
+      bool = true;
+    }
+    return bool;
+    // const index = result.indexOf(n);
+    // let neighborTopIndex = 0;
+    // let neighborBottomIndex = 0;
+    // if (index === 0) {
+    //   neighborTopIndex = 1;
+    //   neighborBottomIndex = neighborTopIndex;
+    // } else if (index === result[result.length - 1]) {
+    //   neighborTopIndex = result.length - 2;
+    //   neighborBottomIndex = neighborTopIndex;
+    // } else {
+    //   neighborTopIndex = index + 1;
+    //   neighborBottomIndex = index - 1;
+    // }
+    // if (graph.getNeighbors(n).includes(result[neighborTopIndex]) && graph.getNeighbors(n).includes(result[neighborBottomIndex])) {
+    //   return false;
+    // }
   }), 'third assertion');
   console.assert(result.every((n) => {
     result.every((m) => {
