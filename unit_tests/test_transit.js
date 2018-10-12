@@ -690,9 +690,9 @@ QUnit.test('simulate a passenger taking a combined walking/riding path', (assert
   time = city.step();
   assert.deepEqual(time, 26);
   assert.deepEqual(passenger.vertex, d);
-  time = city.step();
-  assert.deepEqual(time, 30);
-  assert.deepEqual(passenger.vertex, d);
+  // time = city.step();  The passenger has already reached its destination. There is no need for this last assertion.
+  // assert.deepEqual(time, 30);
+  // assert.deepEqual(passenger.vertex, d);
 });
 
 QUnit.test('simulate restarting a bus\'s decision making while a passenger is boarding', (assert) => {
@@ -948,32 +948,32 @@ QUnit.test('simulate a passenger alighting after the bus they are riding is rero
   x.start();
   city.addEvent(new SimulationEvent(2, () => undefined));
   let time = city.step();
-  assert.deepEqual(time, 2);
+  assert.deepEqual(time, 1);
   route.patch(b, a);
   time = city.step();
-  assert.deepEqual(time, 3);
+  assert.deepEqual(time, 2);
+  assert.deepEqual(passenger.vertex, undefined);
+  time = city.step();
+  assert.deepEqual(time, 4);
   assert.deepEqual(x.vertex, b);
   time = city.step();
-  assert.deepEqual(time, 6);
-  assert.deepEqual(x.vertex, a);
-  time = city.step();
-  assert.deepEqual(time, 9);
+  assert.deepEqual(time, 5);
   assert.deepEqual(x.vertex, b);
   time = city.step();
-  assert.deepEqual(time, 12);
+  assert.deepEqual(time, 8);
   assert.deepEqual(x.vertex, a);
+  time = city.step();
+  assert.deepEqual(time, 10);
+  assert.deepEqual(x.vertex, undefined);
+  time = city.step();
+  assert.deepEqual(time, 11);
+  assert.deepEqual(x.vertex, b);
+  time = city.step();
+  assert.deepEqual(time, 13);
+  assert.deepEqual(x.vertex, undefined);
   time = city.step();
   assert.deepEqual(time, 14);
-  assert.deepEqual(passenger.vertex, b);
-  time = city.step();
-  assert.deepEqual(time, 15);
-  assert.deepEqual(x.vertex, b);
-  time = city.step();
-  assert.deepEqual(time, 18);
   assert.deepEqual(x.vertex, a);
-  time = city.step();
-  assert.deepEqual(time, 19);
-  assert.deepEqual(passenger.vertex, c);
 });
 
 QUnit.test('simulate a passenger continuing to ride after the bus they are riding is rerouted', (assert) => {
