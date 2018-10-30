@@ -47,11 +47,12 @@ function computeTransitGraph(city) {
 //   D^(i)[u][v] is the distance from u to v using only the first i vertices as intermediates, so
 //   D^(n)[u][v] is the distance from u to v.
 //
-//   D^(0)[u][v] = …
-//   D^(i)[u][v] = …    for 1 ≤ i ≤ n
+//   D^(0)[u][v] = W[u][v]
+//   D^(i)[u][v] = min(D(i - 1)[u, v], D(i - 1)[u][i -1] + D(i - 1)[i - 1][v])    for 1 ≤ i ≤ n
 //
 // Recurrence for Shortest-Path Successors:
-//   S^(i)[u][v] is a vertex that immediately follows u in a shortest path from u to v using only the first i vertices as intermediates, so
+//   S^(i)[u][v] is a vertex that immediately follows u in a shortest path from u to v using only the
+//                 first i vertices as intermediates, so
 //   S^(n)[u][v] is a vertex that immediately follows u in a shortest path from u to v.
 //
 //   S^(0)[u][v] = …    if …
