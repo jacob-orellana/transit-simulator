@@ -62,6 +62,86 @@ const CITY_FOR_SMOKE_TESTS = (() => {
   return city;
 })();
 
+const CITY_MAXIMUM_OF_TWO = (() => {
+  const a = new Vertex('a');
+  const b = new Vertex('b');
+  const c = new Vertex('c');
+  const d = new Vertex('d');
+  const walkGraph = new UndirectedGraph();
+  walkGraph.addVertex(a);
+  walkGraph.addVertex(b);
+  walkGraph.addVertex(c);
+  walkGraph.addVertex(d);
+  walkGraph.addEdge(a, new UndirectedEdge(2.0), b);
+  walkGraph.addEdge(a, new UndirectedEdge(4.0), c);
+  const driveGraph = new UndirectedGraph();
+  driveGraph.addVertex(a);
+  driveGraph.addVertex(b);
+  driveGraph.addVertex(c);
+  driveGraph.addVertex(d);
+  driveGraph.addEdge(c, new UndirectedEdge(1.0), d);
+  const city = new City(walkGraph, driveGraph);
+  const route = new Route(city, c, d);
+  const x = new Bus(route.getArc(c)); // eslint-disable-line no-unused-vars
+  return city;
+})();
+
+const MAX_DEGREE_FOUR_CITY = (() => {
+  const a = new Vertex('a');
+  const b = new Vertex('b');
+  const c = new Vertex('c');
+  const walkGraph = new UndirectedGraph();
+  walkGraph.addVertex(a);
+  walkGraph.addVertex(b);
+  walkGraph.addVertex(c);
+  walkGraph.addEdge(a, new UndirectedEdge(2.0), b);
+  walkGraph.addEdge(a, new UndirectedEdge(4.0), c);
+  walkGraph.addEdge(b, new UndirectedEdge(8.0), c);
+  const driveGraph = new UndirectedGraph();
+  driveGraph.addVertex(a);
+  driveGraph.addVertex(b);
+  driveGraph.addVertex(c);
+  driveGraph.addEdge(a, new UndirectedEdge(1.0), c);
+  driveGraph.addEdge(a, new UndirectedEdge(1.0), b);
+  driveGraph.addEdge(b, new UndirectedEdge(1.0), c);
+  const city = new City(walkGraph, driveGraph);
+  const route = new Route(city, a, c);
+  const x = new Bus(route.getArc(a)); // eslint-disable-line no-unused-vars
+  const y = new Bus(route.getArc(c)); // eslint-disable-line no-unused-vars
+  return city;
+})();
+
+const INFINITE_STEPS_CITY = (() => {
+  const a = new Vertex('a');
+  const b = new Vertex('b');
+  const c = new Vertex('c');
+  const walkGraph = new UndirectedGraph();
+  walkGraph.addVertex(a);
+  walkGraph.addVertex(b);
+  walkGraph.addVertex(c);
+  walkGraph.addEdge(a, new UndirectedEdge(2.0), b);
+  const driveGraph = new UndirectedGraph();
+  driveGraph.addVertex(a);
+  driveGraph.addVertex(b);
+  driveGraph.addVertex(c);
+  const city = new City(walkGraph, driveGraph);
+  const route = new Route(city, a, c);
+  const x = new Bus(route.getArc(a)); // eslint-disable-line no-unused-vars
+  const y = new Bus(route.getArc(c)); // eslint-disable-line no-unused-vars
+  return city;
+})();
+
+const CITY_DEGREE_ONE = (() => {
+  const a = new Vertex('a');
+  const b = new Vertex('b');
+  const walkGraph = new UndirectedGraph();
+  walkGraph.addVertex(a);
+  walkGraph.addVertex(b);
+  walkGraph.addEdge(a, new UndirectedEdge(2.0), b);
+  const city = new City(walkGraph);
+  return city;
+})();
+
 QUnit.test('smoke test computeTransitGraph', (assert) => {
   const transitGraph = computeTransitGraph(CITY_FOR_SMOKE_TESTS);
   assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,2); (a,c,2); (b,a,2); (b,b,Infinity); (b,c,8); (c,a,2); (c,b,8); (c,c,Infinity)');
