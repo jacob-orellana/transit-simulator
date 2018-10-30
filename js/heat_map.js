@@ -55,11 +55,11 @@ function computeTransitGraph(city) {
 //                 first i vertices as intermediates, so
 //   S^(n)[u][v] is a vertex that immediately follows u in a shortest path from u to v.
 //
-//   S^(0)[u][v] = …    if …
-//                 …    otherwise
-//   S^(i)[u][v] = …    if …
-//                 …    if …
-//                 …    otherwise    for 1 ≤ i ≤ n
+//   S^(0)[u][v] =  undefined    if no path u to v
+//                  v    otherwise
+//   S^(i)[u][v] =  undefined    if no path u to v
+//                 v    if D^(i)[u][v] = D(i - 1)[u , v]
+//                 i -1    otherwise    for 1 ≤ i ≤ n
 function computeShortestPathSuccessors(transitGraph) {
   return undefined; // TODO: stub
 }
