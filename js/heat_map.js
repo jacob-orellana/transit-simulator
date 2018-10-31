@@ -37,7 +37,7 @@ class EdgeLabeledGraph {
 }
 
 function computeTransitGraph(city) {
-  return undefined; // TODO: stub
+
 }
 
 // Preliminaries:
@@ -60,7 +60,26 @@ function computeTransitGraph(city) {
 //   S^(i)[u][v] =  undefined    if no path u to v
 //                 v    if D^(i)[u][v] = D(i - 1)[u , v]
 //                 i -1    otherwise    for 1 ≤ i ≤ n
+// function computeShortestPathSuccessors(transitGraph) {
+//  const result = new EdgeLabeledGraph(transitGraph.edges);
+//  const beginning = result.edges.keys()[0];
+//  for (const [source, adjacencies] of result.edges){
+//    for (const [destination, label] of adjacencies) {
+//      if (label !== undefined) {
+//        if (source === beginning) {
+//          result.setLabel(source, destination, destination);
+//        } else {
+//          result.setLabel(source, destination, beginning);
+//        }
+//      }
+//    }
+//  }
+//  return result;
+// }
+
 function computeShortestPathSuccessors(transitGraph) {
+  const result = new EdgeLabeledGraph(transitGraph.edges.keys());
+  console.log(result);
   return undefined;
 }
 
