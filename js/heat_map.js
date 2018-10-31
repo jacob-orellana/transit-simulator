@@ -60,34 +60,46 @@ function computeTransitGraph(city) {
 //   S^(i)[u][v] =  undefined    if no path u to v
 //                 v    if D^(i)[u][v] = D(i - 1)[u , v]
 //                 i -1    otherwise    for 1 ≤ i ≤ n
-// function computeShortestPathSuccessors(transitGraph) {
-//  const result = new EdgeLabeledGraph(transitGraph.edges);
-//  const beginning = result.edges.keys()[0];
-//  for (const [source, adjacencies] of result.edges){
-//    for (const [destination, label] of adjacencies) {
-//      if (label !== undefined) {
-//        if (source === beginning) {
-//          result.setLabel(source, destination, destination);
-//        } else {
-//          result.setLabel(source, destination, beginning);
-//        }
-//      }
-//    }
-//  }
-//  return result;
-// }
 
 function computeShortestPathSuccessors(transitGraph) {
-  for (transitGraph.edges)
-  const result = new EdgeLabeledGraph(vertices);
-  for (const [source, adjacencies] of result.edges) {
-    let minimum = Infinity;
-    for (const [destination, label] of adjacencies) {
-      if (label !== undefined) {
-        if (label < minimum) {
-          minimum = label;
-          result.setLabel(source, destination, destination);
+  const additive = [];
+  const size = transitGraph.vertices.size;
+  for (const vertex of transitGraph.vertices){
+    additive.push(vertex);
+  }
+  for (let k = 0; k < size; ++k){
+    const candidate = [];
+    for (let l = 0; l < size; ++l){
+      candidate.push(undefined);
+    }
+  }
+  const graph = new EdgeLabeledGraph(additive, undefined);
+  const result = new EdgeLabeledGraph(additive, undefined);
+  for (const vertexOne of transitGraph.vertices) {
+    for (const vertexTwo of transitGraph.vertices){
+      if (vertexOne === vertexTwo){
+        graph.setLabel(vertexOne, vertexTwo, '');
+        result.setLabel(vertexOne, vertexTwo, '');
+      } else {
+        graph.setLabel(vertexOne, vertexTwo, transitGraph.getLabel(vertexOne, vertexTwo));
+        result.setLabel(vertexOne, vertexTwo, vertexTwo);
+      }
+    }
+  }
+  for (const i of transitGraph.vertices){
+    for (const j of transitGraph.vertices){
+      let kLoops = 1;
+      for (const k of transitGraph.vertices){
+        if (kLoops === 1) {
+          const candidate = graph.getLabel(i, k) + graph.getLabel(k, j);
+          if (graph.getLabel(i, j) > candidate){
+            graph.setLabel(i, j, candidate);
+            result.setLabel(i, j, k);
+          } else if (i !== j) {
+            result.setLabel(i, j, j);
+          }
         }
+        ++kLoops;
       }
     }
   }
