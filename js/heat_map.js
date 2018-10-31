@@ -61,7 +61,7 @@ function computeTransitGraph(city) {
 //                 v    if D^(i)[u][v] = D(i - 1)[u , v]
 //                 i -1    otherwise    for 1 ≤ i ≤ n
 function computeShortestPathSuccessors(transitGraph) {
-  return undefined; // TODO: stub
+  return undefined;
 }
 
 // Preliminaries:
