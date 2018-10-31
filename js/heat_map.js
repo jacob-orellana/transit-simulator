@@ -78,9 +78,20 @@ function computeTransitGraph(city) {
 // }
 
 function computeShortestPathSuccessors(transitGraph) {
-  const result = new EdgeLabeledGraph(transitGraph.edges.keys());
-  console.log(result);
-  return undefined;
+  for (transitGraph.edges)
+  const result = new EdgeLabeledGraph(vertices);
+  for (const [source, adjacencies] of result.edges) {
+    let minimum = Infinity;
+    for (const [destination, label] of adjacencies) {
+      if (label !== undefined) {
+        if (label < minimum) {
+          minimum = label;
+          result.setLabel(source, destination, destination);
+        }
+      }
+    }
+  }
+  return result;
 }
 
 // Preliminaries:
