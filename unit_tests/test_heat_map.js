@@ -153,6 +153,30 @@ QUnit.test('smoke test computeShortestPathSuccessors', (assert) => {
   assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,a); (c,a,a); (c,b,a); (c,c,)');
 });
 
+QUnit.test('maximum of two test computeShortestPathSuccessors', (assert) => { // TO DO
+  const transitGraph = fromTriples('');
+  const successors = computeShortestPathSuccessors(transitGraph);
+  assert.deepEqual(toTriples(successors), '');
+});
+
+QUnit.test('degree four test computeShortestPathSuccessors', (assert) => { // TO DO
+  const transitGraph = fromTriples('');
+  const successors = computeShortestPathSuccessors(transitGraph);
+  assert.deepEqual(toTriples(successors), '');
+});
+
+QUnit.test('infinite steps test computeShortestPathSuccessors', (assert) => { // TO DO
+  const transitGraph = fromTriples('');
+  const successors = computeShortestPathSuccessors(transitGraph);
+  assert.deepEqual(toTriples(successors), '');
+});
+
+QUnit.test('degree one test computeShortestPathSuccessors', (assert) => { // TO DO
+  const transitGraph = fromTriples('');
+  const successors = computeShortestPathSuccessors(transitGraph);
+  assert.deepEqual(toTriples(successors), '');
+});
+
 QUnit.test('smoke test computeTrafficMatrix', (assert) => {
   const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,a); (c,a,a); (c,b,a); (c,c,)');
   const traffic = computeTrafficMatrix(successors);

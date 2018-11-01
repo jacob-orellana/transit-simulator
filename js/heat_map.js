@@ -66,20 +66,63 @@ function computeTransitGraph(city) {
 //   D^(i)[u][v] is the distance from u to v using only the first i vertices as intermediates, so
 //   D^(n)[u][v] is the distance from u to v.
 //
-//   D^(0)[u][v] = …
-//   D^(i)[u][v] = …    for 1 ≤ i ≤ n
+//   D^(0)[u][v] = W[u][v]
+//   D^(i)[u][v] = min(D(i - 1)[u, v], D(i - 1)[u][i -1] + D(i - 1)[i - 1][v])    for 1 ≤ i ≤ n
 //
 // Recurrence for Shortest-Path Successors:
-//   S^(i)[u][v] is a vertex that immediately follows u in a shortest path from u to v using only the first i vertices as intermediates, so
+//   S^(i)[u][v] is a vertex that immediately follows u in a shortest path from u to v using only the
+//                 first i vertices as intermediates, so
 //   S^(n)[u][v] is a vertex that immediately follows u in a shortest path from u to v.
 //
-//   S^(0)[u][v] = …    if …
-//                 …    otherwise
-//   S^(i)[u][v] = …    if …
-//                 …    if …
-//                 …    otherwise    for 1 ≤ i ≤ n
+//   S^(0)[u][v] =  undefined    if no path u to v
+//                  v    otherwise
+//   S^(i)[u][v] =  undefined    if no path u to v
+//                 v    if D^(i)[u][v] = D(i - 1)[u , v]
+//                 i -1    otherwise    for 1 ≤ i ≤ n
+
 function computeShortestPathSuccessors(transitGraph) {
-  return undefined; // TODO: stub
+  const additive = [];
+  const size = transitGraph.vertices.size;
+  for (const vertex of transitGraph.vertices){
+    additive.push(vertex);
+  }
+  for (let k = 0; k < size; ++k){
+    const candidate = [];
+    for (let l = 0; l < size; ++l){
+      candidate.push(undefined);
+    }
+  }
+  const graph = new EdgeLabeledGraph(additive, undefined);
+  const result = new EdgeLabeledGraph(additive, undefined);
+  for (const vertexOne of transitGraph.vertices) {
+    for (const vertexTwo of transitGraph.vertices){
+      if (vertexOne === vertexTwo){
+        graph.setLabel(vertexOne, vertexTwo, '');
+        result.setLabel(vertexOne, vertexTwo, '');
+      } else {
+        graph.setLabel(vertexOne, vertexTwo, transitGraph.getLabel(vertexOne, vertexTwo));
+        result.setLabel(vertexOne, vertexTwo, vertexTwo);
+      }
+    }
+  }
+  for (const i of transitGraph.vertices){
+    for (const j of transitGraph.vertices){
+      let kLoops = 1;
+      for (const k of transitGraph.vertices){
+        if (kLoops === 1) {
+          const candidate = graph.getLabel(i, k) + graph.getLabel(k, j);
+          if (graph.getLabel(i, j) > candidate){
+            graph.setLabel(i, j, candidate);
+            result.setLabel(i, j, k);
+          } else if (i !== j) {
+            result.setLabel(i, j, j);
+          }
+        }
+        ++kLoops;
+      }
+    }
+  }
+  return result;
 }
 
 // Preliminaries:
