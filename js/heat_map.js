@@ -37,7 +37,26 @@ class EdgeLabeledGraph {
 }
 
 function computeTransitGraph(city) {
-  return undefined; // TODO: stub
+  const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, 'Infinity');
+  // for (const vertex1 of city.driveGraph.vertices){
+  //   if (!transitGraph.vertices.includes(vertex1)){
+  //     transitGraph.vertices.push(vertex1);
+  //   }
+  // }
+  for (const vertex of transitGraph.vertices) {
+    for (const neighbor of city.walkGraph.getNeighbors(vertex)){
+      const walkEdge = city.walkGraph.getEdge(vertex, neighbor);
+      if (city.driveGraph.getNeighbors(vertex).includes(neighbor)) {
+        const driveEdge = city.driveGraph.getEdge(vertex, neighbor);
+        if (driveEdge.weight < walkEdge.weight){
+          transitGraph.setLabel(vertex, neighbor, driveEdge.weight);
+        }
+      } else {
+        transitGraph.setLabel(vertex, neighbor, walkEdge.weight);
+      }
+    }
+  }
+  return transitGraph;
 }
 
 // Preliminaries:
