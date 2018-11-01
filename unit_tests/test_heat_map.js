@@ -119,7 +119,7 @@ const INFINITE_STEPS_CITY = (() => {
   walkGraph.addVertex(a);
   walkGraph.addVertex(b);
   walkGraph.addVertex(c);
-  walkGraph.addEdge(a, new UndirectedEdge(2.0), b);
+  walkGraph.addEdge(a, new UndirectedEdge(1.0), b);
   const driveGraph = new UndirectedGraph();
   driveGraph.addVertex(a);
   driveGraph.addVertex(b);
@@ -131,20 +131,24 @@ const INFINITE_STEPS_CITY = (() => {
   return city;
 })();
 
-const CITY_DEGREE_ONE = (() => {
-  const a = new Vertex('a');
-  const b = new Vertex('b');
-  const walkGraph = new UndirectedGraph();
-  walkGraph.addVertex(a);
-  walkGraph.addVertex(b);
-  walkGraph.addEdge(a, new UndirectedEdge(2.0), b);
-  const city = new City(walkGraph);
-  return city;
-})();
-
 QUnit.test('smoke test computeTransitGraph', (assert) => {
   const transitGraph = computeTransitGraph(CITY_FOR_SMOKE_TESTS);
   assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,2); (a,c,2); (b,a,2); (b,b,Infinity); (b,c,8); (c,a,2); (c,b,8); (c,c,Infinity)');
+});
+
+QUnit.test('maximum of two test computeTransitGraph', (assert) => {
+  const transitGraph = computeTransitGraph(CITY_MAXIMUM_OF_TWO);
+  assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,2); (a,c,2); (b,a,2); (b,b,Infinity); (b,c,8); (c,a,2); (c,b,8); (c,c,Infinity)');
+});
+
+QUnit.test('maximum of four test computeTransitGraph', (assert) => {
+  const transitGraph = computeTransitGraph(MAX_DEGREE_FOUR_CITY);
+  assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,2); (a,c,2); (b,a,2); (b,b,Infinity); (b,c,2); (c,a,2); (c,b,2); (c,c,Infinity)');
+});
+
+QUnit.test('infinite steps test computeTransitGraph', (assert) => {
+  const transitGraph = computeTransitGraph(INFINITE_STEPS_CITY);
+  assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,1); (a,c,Infinity); (b,a,1); (b,b,Infinity); (b,c,Infinity); (c,a,Infinity); (c,b,Infinity); (c,c,Infinity)');
 });
 
 QUnit.test('smoke test computeShortestPathSuccessors', (assert) => {
@@ -154,27 +158,21 @@ QUnit.test('smoke test computeShortestPathSuccessors', (assert) => {
 });
 
 QUnit.test('maximum of two test computeShortestPathSuccessors', (assert) => { // TO DO
-  const transitGraph = fromTriples('');
+  const transitGraph = fromTriples('(a,a,Infinity); (a,b,2); (a,c,4); (a,d,6); (b,a,2); (b,b,Infinity); (b,c,6); (b,d,8); (c,a,4); (c,b,6); (c,d,2); (d,a,6); (d,b,8); (d,c,2); (d,d,Infinity)');
   const successors = computeShortestPathSuccessors(transitGraph);
-  assert.deepEqual(toTriples(successors), '');
+  assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,c); (a,d,c); (b,a,a); (b,b,); (b,c,a); (b,d,a); (c,a,a); (c,b,a); (c,d,d); (d,a,c); (d,b,c); (d,c,c); (d,d,)');
 });
 
 QUnit.test('degree four test computeShortestPathSuccessors', (assert) => { // TO DO
-  const transitGraph = fromTriples('');
+  const transitGraph = fromTriples('(a,a,Infinity); (a,b,2); (a,c,2); (b,a,2); (b,b,Infinity); (b,c,2); (c,a,2); (c,b,2); (c,c,Infinity)');
   const successors = computeShortestPathSuccessors(transitGraph);
-  assert.deepEqual(toTriples(successors), '');
+  assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,c); (c,a,a); (c,b,b); (c,c,)');
 });
 
 QUnit.test('infinite steps test computeShortestPathSuccessors', (assert) => { // TO DO
-  const transitGraph = fromTriples('');
+  const transitGraph = fromTriples('(a,a,Infinity); (a,b,1); (a,c,Infinity); (b,a,1); (b,b,Infinity); (b,c,Infinity); (c,a,Infinity); (c,b,Infinity); (c,c,Infinity)');
   const successors = computeShortestPathSuccessors(transitGraph);
-  assert.deepEqual(toTriples(successors), '');
-});
-
-QUnit.test('degree one test computeShortestPathSuccessors', (assert) => { // TO DO
-  const transitGraph = fromTriples('');
-  const successors = computeShortestPathSuccessors(transitGraph);
-  assert.deepEqual(toTriples(successors), '');
+  assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,); (b,a,a); (b,b,); (b,c,); (c,a,); (c,b,); (c,c,)');
 });
 
 QUnit.test('smoke test computeTrafficMatrix', (assert) => {
