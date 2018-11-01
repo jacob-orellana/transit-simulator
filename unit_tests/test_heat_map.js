@@ -138,7 +138,7 @@ QUnit.test('smoke test computeTransitGraph', (assert) => {
 
 QUnit.test('maximum of two test computeTransitGraph', (assert) => {
   const transitGraph = computeTransitGraph(CITY_MAXIMUM_OF_TWO);
-  assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,2); (a,c,2); (b,a,2); (b,b,Infinity); (b,c,8); (c,a,2); (c,b,8); (c,c,Infinity)');
+  assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,2); (a,c,4); (b,a,2); (b,b,Infinity); (b,c,8); (c,a,4); (c,b,8); (c,c,Infinity)');
 });
 
 QUnit.test('maximum of four test computeTransitGraph', (assert) => {

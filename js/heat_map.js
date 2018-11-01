@@ -38,21 +38,18 @@ class EdgeLabeledGraph {
 
 function computeTransitGraph(city) {
   const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, 'Infinity');
-  // for (const vertex1 of city.driveGraph.vertices){
-  //   if (!transitGraph.vertices.includes(vertex1)){
-  //     transitGraph.vertices.push(vertex1);
-  //   }
-  // }
-  for (const vertex of transitGraph.vertices) {
-    for (const neighbor of city.walkGraph.getNeighbors(vertex)){
-      const walkEdge = city.walkGraph.getEdge(vertex, neighbor);
-      if (city.driveGraph.getNeighbors(vertex).includes(neighbor)) {
-        const driveEdge = city.driveGraph.getEdge(vertex, neighbor);
-        if (driveEdge.weight < walkEdge.weight){
-          transitGraph.setLabel(vertex, neighbor, driveEdge.weight);
+  for (const source of transitGraph.vertices) {
+    for (const destination of transitGraph.vertices) {
+      if (city.driveGraph.getNeighbors(source).includes(destination) && city.walkGraph.getNeighbors(source).includes(destination)) {
+        if (city.driveGraph.getEdge(source, destination).weight < city.walkGraph.getEdge(source, destination).weight) {
+          transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight * 2);
+        } else {
+          transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
         }
-      } else {
-        transitGraph.setLabel(vertex, neighbor, walkEdge.weight);
+      } else if (city.walkGraph.getNeighbors(source).includes(destination)) {
+        transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
+      } else if (city.driveGraph.getNeighbors(source).includes(destination)){
+        transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight);
       }
     }
   }
