@@ -305,10 +305,6 @@ class Route {
       eta: bestETA,
     };
   }
-
-  toString() {
-    return `Route ${this.city.routes.indexOf(this)}`;
-  }
 }
 
 class Bus extends Agent {
