@@ -79,15 +79,8 @@ function computeTransitGraph(city) {
 
 function computeShortestPathSuccessors(transitGraph) {
   const additive = [];
-  const size = transitGraph.vertices.size;
   for (const vertex of transitGraph.vertices){
     additive.push(vertex);
-  }
-  for (let k = 0; k < size; ++k){
-    const candidate = [];
-    for (let l = 0; l < size; ++l){
-      candidate.push(undefined);
-    }
   }
   const graph = new EdgeLabeledGraph(additive, undefined);
   const result = new EdgeLabeledGraph(additive, undefined);
@@ -104,7 +97,7 @@ function computeShortestPathSuccessors(transitGraph) {
   }
   for (const i of transitGraph.vertices){
     for (const j of transitGraph.vertices){
-      let kLoops = 1;
+      let kLoops = 1; // Can be taken out to find shortest path in general. Currently stops the algorithm at k = 1 since the specification calls for k = 1.
       for (const k of transitGraph.vertices){
         if (kLoops === 1) {
           const candidate = graph.getLabel(i, k) + graph.getLabel(k, j);
