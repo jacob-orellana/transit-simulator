@@ -93,7 +93,7 @@ function computeShortestPathSuccessors(transitGraph) {
   const result = new EdgeLabeledGraph(additive, undefined);
   for (const vertexOne of transitGraph.vertices) {
     for (const vertexTwo of transitGraph.vertices){
-      if (vertexOne === vertexTwo){
+      if (transitGraph.getLabel(vertexOne, vertexTwo) === Infinity){
         graph.setLabel(vertexOne, vertexTwo, '');
         result.setLabel(vertexOne, vertexTwo, '');
       } else {
@@ -108,11 +108,11 @@ function computeShortestPathSuccessors(transitGraph) {
       for (const k of transitGraph.vertices){
         if (kLoops === 1) {
           const candidate = graph.getLabel(i, k) + graph.getLabel(k, j);
-          if (graph.getLabel(i, j) > candidate){
+          if (candidate === '' && graph.getLabel(i, j) === ''){
+            result.setLabel(i, j, '');
+          } else if (graph.getLabel(i, j) > candidate){
             graph.setLabel(i, j, candidate);
             result.setLabel(i, j, k);
-          } else if (i !== j) {
-            result.setLabel(i, j, j);
           }
         }
         ++kLoops;

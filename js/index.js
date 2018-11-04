@@ -3,7 +3,7 @@
 // Configuration
 
 const LOAD_MAPS_FROM_SERVER = false;
-const HARD_CODED_MAP = AVERY_MAP;
+const HARD_CODED_MAP = SHANGHAI_MAP;
 const SERVER_MAP_CENTER_ADDRESS = 'Eiffel Tower, Paris, France';
 const SERVER_MAP_RADIUS = 1000; // meters
 const PASSENGER_COUNT = 16;
