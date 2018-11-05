@@ -245,3 +245,36 @@ QUnit.test('smoke test computeHeatMap', (assert) => {
   assert.deepEqual(heat.get(b), 5);
   assert.deepEqual(heat.get(c), 5);
 });
+
+QUnit.test('maximum of two test computeHeatMap', (assert) => {
+  const a = CITY_MAXIMUM_OF_TWO.walkGraph.vertices.find((vertex) => vertex.name === 'a');
+  const b = CITY_MAXIMUM_OF_TWO.walkGraph.vertices.find((vertex) => vertex.name === 'b');
+  const c = CITY_MAXIMUM_OF_TWO.walkGraph.vertices.find((vertex) => vertex.name === 'c');
+  const heat = computeHeatMap(CITY_MAXIMUM_OF_TWO);
+  assert.deepEqual(heat.size, 4);
+  assert.deepEqual(heat.get(a), 7);
+  assert.deepEqual(heat.get(b), 5);
+  assert.deepEqual(heat.get(c), 5);
+});
+
+QUnit.test('maximum of four test computeHeatMap', (assert) => {
+  const a = MAX_DEGREE_FOUR_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'a');
+  const b = MAX_DEGREE_FOUR_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'b');
+  const c = MAX_DEGREE_FOUR_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'c');
+  const heat = computeHeatMap(MAX_DEGREE_FOUR_CITY);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get(a), 5);
+  assert.deepEqual(heat.get(b), 5);
+  assert.deepEqual(heat.get(c), 5);
+});
+
+QUnit.test('infinite test computeHeatMap', (assert) => {
+  const a = INFINITE_STEPS_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'a');
+  const b = INFINITE_STEPS_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'b');
+  const c = INFINITE_STEPS_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'c');
+  const heat = computeHeatMap(INFINITE_STEPS_CITY);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get(a), 4);
+  assert.deepEqual(heat.get(b), 4);
+  assert.deepEqual(heat.get(c), 3);
+});
