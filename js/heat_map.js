@@ -139,16 +139,15 @@ function computeTrafficMatrix(successors) {
     }
   }
   for (const source of successors.vertices) {
+    graph.increaseLabel(source, source, 1);
     for (const destination of successors.vertices){
       for (const values of collection) {
-        if (source === destination) {
-          graph.increaseLabel(source, destination, 1);
-        } else if (values[1] === destination) {
+        if (values[1] === destination) {
           if (values[0] === source || source === values[2]) {
             graph.increaseLabel(source, destination, 1);
+            graph.capLabel(source, destination, additive.length);
           }
         }
-        graph.capLabel(source, destination, additive.length);
       }
     }
   }
