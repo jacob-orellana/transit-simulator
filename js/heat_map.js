@@ -164,6 +164,9 @@ function computeHeatFromTraffic(traffic) {
 }
 
 function computeHeatMap(city) {
-  const result = computeHeatFromTraffic(computeTrafficMatrix(computeShortestPathSuccessors(computeTransitGraph(city))));
+  let result = computeTransitGraph(city);
+  result = computeShortestPathSuccessors(result);
+  result = computeTrafficMatrix(result);
+  result = computeHeatFromTraffic(result);
   return result;
 }
