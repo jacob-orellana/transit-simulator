@@ -37,24 +37,66 @@ class EdgeLabeledGraph {
 }
 
 function computeTransitGraph(city) {
-  const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, 'Infinity');
-  for (const source of transitGraph.vertices) {
-    for (const destination of transitGraph.vertices) {
-      if (city.driveGraph.getNeighbors(source).includes(destination) && city.walkGraph.getNeighbors(source).includes(destination)) {
-        if (city.driveGraph.getEdge(source, destination).weight < city.walkGraph.getEdge(source, destination).weight) {
-          transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight * 2);
+  const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, '');
+  for (const vertexOne of transitGraph.vertices) {
+    for (const vertexTwo of transitGraph.vertices){
+      if (vertexOne !== vertexTwo) {
+        const walkCandidate = city.walkGraph.getEdge(vertexOne, vertexTwo);
+        const driveCandidate = city.driveGraph.getEdge(vertexOne, vertexTwo);
+        if (walkCandidate !== undefined && driveCandidate !== undefined){
+          if (walkCandidate.weight > driveCandidate.weight * 2) {
+            transitGraph.setLabel(vertexOne, vertexTwo, driveCandidate.weight * 2);
+          } else {
+            transitGraph.setLabel(vertexOne, vertexTwo, walkCandidate.weight);
+          }
+        } else if (walkCandidate === undefined && driveCandidate !== undefined) {
+          transitGraph.setLabel(vertexOne, vertexTwo, driveCandidate.weight * 2);
+        } else if (walkCandidate !== undefined && driveCandidate === undefined) {
+          transitGraph.setLabel(vertexOne, vertexTwo, walkCandidate.weight);
         } else {
-          transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
+          transitGraph.setLabel(vertexOne, vertexTwo, Infinity);
         }
-      } else if (city.walkGraph.getNeighbors(source).includes(destination)) {
-        transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
-      } else if (city.driveGraph.getNeighbors(source).includes(destination)){
-        transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight);
+      } else {
+        transitGraph.setLabel(vertexOne, vertexTwo, Infinity);
+      }
+    }
+  }
+  for (const i of transitGraph.vertices){
+    for (const j of transitGraph.vertices){
+      if (i !== j) {
+        for (const k of transitGraph.vertices){
+          if (transitGraph.getLabel(i, k) !== Infinity && Infinity !== transitGraph.getLabel(k, j)) {
+            const candidate = transitGraph.getLabel(i, k) + transitGraph.getLabel(k, j);
+            if (transitGraph.getLabel(i, j) > candidate){
+              transitGraph.setLabel(i, j, candidate);
+            }
+          }
+        }
       }
     }
   }
   return transitGraph;
 }
+
+// function computeTransitGraph(city) {
+//   const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, 'Infinity');
+//   for (const source of transitGraph.vertices) {
+//     for (const destination of transitGraph.vertices) {
+//       if (city.driveGraph.getNeighbors(source).includes(destination) && city.walkGraph.getNeighbors(source).includes(destination)) {
+//         if (city.driveGraph.getEdge(source, destination).weight < city.walkGraph.getEdge(source, destination).weight) {
+//           transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight * 2);
+//         } else {
+//           transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
+//         }
+//       } else if (city.walkGraph.getNeighbors(source).includes(destination)) {
+//         transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
+//       } else if (city.driveGraph.getNeighbors(source).includes(destination)){
+//         transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight);
+//       }
+//     }
+//   }
+//   return transitGraph;
+// }
 
 // Preliminaries:
 //   W[u][v] is the (possibly infinite) weight from u to v.
@@ -156,7 +198,15 @@ function computeTrafficMatrix(successors) {
 }
 
 function computeHeatFromTraffic(traffic) {
-  return undefined; // TODO: stub
+  const result = new Map();
+  for (const source of traffic.vertices){
+    let additive = 0;
+    for (const dest of traffic.vertices){
+      additive += traffic.getLabel(source, dest);
+    }
+    result.set(source, additive);
+  }
+  return result;
 }
 
 function computeHeatMap(city) {
