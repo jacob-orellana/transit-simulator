@@ -126,20 +126,7 @@ function computeShortestPathSuccessors(transitGraph) {
 //   T^(i)[u][v] = 1 + sum_{w|S^(n)[w][v]=u} T^(i-1)[w][v]    for 1 ≤ i ≤ n
 //
 function computeTrafficMatrix(successors) {
-  const additive = [];
-  for (const vertex of successors.vertices){
-    additive.push(vertex);
-  }
-  const graph = new EdgeLabeledGraph(additive, 0);
-  for (const source of successors.vertices){
-    for (const destination of successors.vertices){
-      const label = successors.getLabel(source, destination);
-      if (destination === label || destination === source) {
-        graph.increaseLabel(source, destination, 1);
-      }
-    }
-  }
-  return graph;
+  return undefined; // TODO: stub
 }
 
 function computeHeatFromTraffic(traffic) {
