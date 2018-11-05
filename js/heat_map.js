@@ -42,16 +42,7 @@ function computeTransitGraph(city) {
     for (const vertexTwo of transitGraph.vertices){
       if (vertexOne !== vertexTwo) {
         const walkCandidate = city.walkGraph.getEdge(vertexOne, vertexTwo);
-        const driveCandidate = city.driveGraph.getEdge(vertexOne, vertexTwo);
-        if (walkCandidate !== undefined && driveCandidate !== undefined){
-          if (walkCandidate.weight > driveCandidate.weight * 2) {
-            transitGraph.setLabel(vertexOne, vertexTwo, driveCandidate.weight * 2);
-          } else {
-            transitGraph.setLabel(vertexOne, vertexTwo, walkCandidate.weight);
-          }
-        } else if (walkCandidate === undefined && driveCandidate !== undefined) {
-          transitGraph.setLabel(vertexOne, vertexTwo, driveCandidate.weight * 2);
-        } else if (walkCandidate !== undefined && driveCandidate === undefined) {
+        if (walkCandidate !== undefined){
           transitGraph.setLabel(vertexOne, vertexTwo, walkCandidate.weight);
         } else {
           transitGraph.setLabel(vertexOne, vertexTwo, Infinity);
@@ -64,12 +55,10 @@ function computeTransitGraph(city) {
   for (const i of transitGraph.vertices){
     for (const j of transitGraph.vertices){
       if (i !== j) {
-        for (const k of transitGraph.vertices){
-          if (transitGraph.getLabel(i, k) !== Infinity && Infinity !== transitGraph.getLabel(k, j)) {
-            const candidate = transitGraph.getLabel(i, k) + transitGraph.getLabel(k, j);
-            if (transitGraph.getLabel(i, j) > candidate){
-              transitGraph.setLabel(i, j, candidate);
-            }
+        if (city.driveGraph.getEdge(i, j) !== undefined) {
+          const candidate = city.driveGraph.getEdge(i, j).weight;
+          if (transitGraph.getLabel(i, j) > 2 * candidate){
+            transitGraph.setLabel(i, j, 2 * candidate);
           }
         }
       }
@@ -77,6 +66,26 @@ function computeTransitGraph(city) {
   }
   return transitGraph;
 }
+//   for (const i of transitGraph.vertices){
+//     for (const j of transitGraph.vertices){
+//       if (i !== j) {
+//         let kLoops = 1;
+//         for (const k of transitGraph.vertices){
+//           if (kLoops === 1){
+//             if (transitGraph.getLabel(i, k) !== Infinity && Infinity !== transitGraph.getLabel(k, j)) {
+//               const candidate = transitGraph.getLabel(i, k) + transitGraph.getLabel(k, j);
+//               if (transitGraph.getLabel(i, j) > candidate){
+//                 transitGraph.setLabel(i, j, candidate);
+//               }
+//             }
+//             ++kLoops;
+//           }
+//         }
+//       }
+//     }
+//   }
+//   return transitGraph;
+// }
 
 // Preliminaries:
 //   W[u][v] is the (possibly infinite) weight from u to v.
