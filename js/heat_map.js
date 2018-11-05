@@ -164,5 +164,6 @@ function computeHeatFromTraffic(traffic) {
 }
 
 function computeHeatMap(city) {
-  return undefined; // TODO: stub
+  const result = computeHeatFromTraffic(computeTrafficMatrix(computeShortestPathSuccessors(computeTransitGraph(city))));
+  return result;
 }
