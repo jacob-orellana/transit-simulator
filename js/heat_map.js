@@ -37,29 +37,23 @@ class EdgeLabeledGraph {
 }
 
 function computeTransitGraph(city) {
-  const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, '');
-  for (const vertexOne of transitGraph.vertices) {
-    for (const vertexTwo of transitGraph.vertices){
-      if (vertexOne !== vertexTwo) {
-        const walkCandidate = city.walkGraph.getEdge(vertexOne, vertexTwo);
-        if (walkCandidate !== undefined){
-          transitGraph.setLabel(vertexOne, vertexTwo, walkCandidate.weight);
-        } else {
-          transitGraph.setLabel(vertexOne, vertexTwo, Infinity);
-        }
-      } else {
-        transitGraph.setLabel(vertexOne, vertexTwo, Infinity);
-      }
-    }
-  }
-  for (const i of transitGraph.vertices){
-    for (const j of transitGraph.vertices){
-      if (i !== j) {
-        if (city.driveGraph.getEdge(i, j) !== undefined) {
-          const candidate = city.driveGraph.getEdge(i, j).weight;
-          if (transitGraph.getLabel(i, j) > 2 * candidate){
-            transitGraph.setLabel(i, j, 2 * candidate);
+  const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, 'Infinity');
+  const i = 0;
+  for (const source of transitGraph.vertices) {
+    for (const destination of transitGraph.vertices) {
+      while (i < transitGraph.vertices.length) {
+        if (city.driveGraph.getNeighbors(source).includes(destination) && city.walkGraph.getNeighbors(source).includes(destination)) {
+          if (city.driveGraph.getEdge(source, destination).weight < city.walkGraph.getEdge(source, destination).weight) {
+            transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight * 2);
+          } else {
+            transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
           }
+        } else if (city.walkGraph.getNeighbors(source).includes(destination)) {
+          transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
+        } else if (city.driveGraph.getNeighbors(source).includes(destination)){
+          transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight * 2);
+        } else {
+          continue;
         }
       }
     }
