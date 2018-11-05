@@ -181,6 +181,11 @@ QUnit.test('smoke test computeTrafficMatrix', (assert) => {
   assert.deepEqual(toTriples(traffic), '(a,a,3); (a,b,2); (a,c,2); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
 });
 
+QUnit.test('smoke test computeInfiniteTrafficMatrix', (assert) => {
+  const successors = fromTriples('(a,a,); (a,b,b); (a,c,); (b,a,a); (b,b,); (b,c,); (c,a,); (c,b,); (c,c,)');
+  const traffic = computeTrafficMatrix(successors);
+  assert.deepEqual(toTriples(traffic), '(a,a,2); (a,b,1); (a,c,1); (b,a,1); (b,b,2); (b,c,1); (c,a,1); (c,b,1); (c,c,1)');
+
 QUnit.test('maximum of two test computerTraffixMatrix', (assert) => {
   const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (a,d,d); (b,a,a); (b,b,); (b,c,c); (b,d,d); (c,a,a); (c,b,b); (c,c,); (c,d,d); (d,a,a); (d,b,b); (d,c,c); (d,d,)');
   const traffic = computeTrafficMatrix(successors);
