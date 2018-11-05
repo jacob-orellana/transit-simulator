@@ -181,12 +181,6 @@ QUnit.test('smoke test computeTrafficMatrix', (assert) => {
   assert.deepEqual(toTriples(traffic), '(a,a,3); (a,b,2); (a,c,2); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
 });
 
-QUnit.test('maximum of two  test computeTrafficMatrix', (assert) => {
-  const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (a,d,d); (b,a,a); (b,b,); (b,c,c); (b,d,d); (c,a,a); (c,b,b); (c,c,); (c,d,d); (d,a,a); (d,b,b); (d,c,c); (d,d,)');
-  const traffic = computeTrafficMatrix(successors);
-  assert.deepEqual(toTriples(traffic), '(a,a,3); (a,b,2); (a,c,2); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
-});
-
 QUnit.test('maximum of four  test computeTrafficMatrix', (assert) => {
   const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,c); (c,a,a); (c,b,b); (c,c,)');
   const traffic = computeTrafficMatrix(successors);
@@ -199,22 +193,10 @@ QUnit.test('infinite steps test computeTrafficMatrix', (assert) => {
   assert.deepEqual(toTriples(traffic), '(a,a,2); (a,b,1); (a,c,1); (b,a,1); (b,b,2); (b,c,1); (c,a,1); (c,b,1); (c,c,1)');
 });
 
-QUnit.test('smoke test computeInfiniteTrafficMatrix', (assert) => {
-  const successors = fromTriples('(a,a,); (a,b,b); (a,c,); (b,a,a); (b,b,); (b,c,); (c,a,); (c,b,); (c,c,)');
-  const traffic = computeTrafficMatrix(successors);
-  assert.deepEqual(toTriples(traffic), '(a,a,2); (a,b,1); (a,c,1); (b,a,1); (b,b,2); (b,c,1); (c,a,1); (c,b,1); (c,c,1)');
-});
-
-QUnit.test('maximum of two test computerTraffixMatrix', (assert) => {
+QUnit.test('maximum of two test computeTraffixMatrix', (assert) => {
   const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (a,d,d); (b,a,a); (b,b,); (b,c,c); (b,d,d); (c,a,a); (c,b,b); (c,c,); (c,d,d); (d,a,a); (d,b,b); (d,c,c); (d,d,)');
   const traffic = computeTrafficMatrix(successors);
   assert.deepEqual(toTriples(traffic), '(a,a,4); (a,b,1); (a,c,1); (a,d,1); (b,a,1); (b,b,4); (b,c,1); (b,d,1); (c,a,1); (c,b,1); (c,c,4); (c,d,1); (d,a,1); (d,b,1); (d,c,1); (d,d,4)');
-});
-
-QUnit.test('degree four test computerTraffixMatrix', (assert) => {
-  const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,c); (c,a,a); (c,b,b); (c,c,)');
-  const traffic = computeTrafficMatrix(successors);
-  assert.deepEqual(toTriples(traffic), '(a,a,3); (a,b,1); (a,c,1); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
 });
 
 QUnit.test('smoke test computeHeatFromTraffic', (assert) => {
@@ -224,6 +206,33 @@ QUnit.test('smoke test computeHeatFromTraffic', (assert) => {
   assert.deepEqual(heat.get('a'), 7); // fromTriples will give us string keys, not vertex keys
   assert.deepEqual(heat.get('b'), 5);
   assert.deepEqual(heat.get('c'), 5);
+});
+
+QUnit.test('maximum of two  test computeHeatFromTraffic', (assert) => { // To do
+  const traffic = fromTriples('(a,a,3); (a,b,2); (a,c,2); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
+  const heat = computeHeatFromTraffic(traffic);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get('a'), 7); // fromTriples will give us string keys, not vertex keys
+  assert.deepEqual(heat.get('b'), 5);
+  assert.deepEqual(heat.get('c'), 5);
+});
+
+QUnit.test('maximum of four test computeHeatFromTraffic', (assert) => {
+  const traffic = fromTriples('(a,a,3); (a,b,1); (a,c,1); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
+  const heat = computeHeatFromTraffic(traffic);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get('a'), 5); // fromTriples will give us string keys, not vertex keys
+  assert.deepEqual(heat.get('b'), 5);
+  assert.deepEqual(heat.get('c'), 5);
+});
+
+QUnit.test('infinite test computeHeatFromTraffic', (assert) => {
+  const traffic = fromTriples('(a,a,2); (a,b,1); (a,c,1); (b,a,1); (b,b,2); (b,c,1); (c,a,1); (c,b,1); (c,c,1)');
+  const heat = computeHeatFromTraffic(traffic);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get('a'), 4); // fromTriples will give us string keys, not vertex keys
+  assert.deepEqual(heat.get('b'), 4);
+  assert.deepEqual(heat.get('c'), 3);
 });
 
 QUnit.test('smoke test computeHeatMap', (assert) => {
