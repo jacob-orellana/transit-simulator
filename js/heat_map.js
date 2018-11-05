@@ -78,26 +78,6 @@ function computeTransitGraph(city) {
   return transitGraph;
 }
 
-// function computeTransitGraph(city) {
-//   const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, 'Infinity');
-//   for (const source of transitGraph.vertices) {
-//     for (const destination of transitGraph.vertices) {
-//       if (city.driveGraph.getNeighbors(source).includes(destination) && city.walkGraph.getNeighbors(source).includes(destination)) {
-//         if (city.driveGraph.getEdge(source, destination).weight < city.walkGraph.getEdge(source, destination).weight) {
-//           transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight * 2);
-//         } else {
-//           transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
-//         }
-//       } else if (city.walkGraph.getNeighbors(source).includes(destination)) {
-//         transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
-//       } else if (city.driveGraph.getNeighbors(source).includes(destination)){
-//         transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight);
-//       }
-//     }
-//   }
-//   return transitGraph;
-// }
-
 // Preliminaries:
 //   W[u][v] is the (possibly infinite) weight from u to v.
 //
