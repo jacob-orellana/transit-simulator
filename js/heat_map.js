@@ -66,26 +66,6 @@ function computeTransitGraph(city) {
   }
   return transitGraph;
 }
-//   for (const i of transitGraph.vertices){
-//     for (const j of transitGraph.vertices){
-//       if (i !== j) {
-//         let kLoops = 1;
-//         for (const k of transitGraph.vertices){
-//           if (kLoops === 1){
-//             if (transitGraph.getLabel(i, k) !== Infinity && Infinity !== transitGraph.getLabel(k, j)) {
-//               const candidate = transitGraph.getLabel(i, k) + transitGraph.getLabel(k, j);
-//               if (transitGraph.getLabel(i, j) > candidate){
-//                 transitGraph.setLabel(i, j, candidate);
-//               }
-//             }
-//             ++kLoops;
-//           }
-//         }
-//       }
-//     }
-//   }
-//   return transitGraph;
-// }
 
 // Preliminaries:
 //   W[u][v] is the (possibly infinite) weight from u to v.
@@ -157,27 +137,13 @@ function computeShortestPathSuccessors(transitGraph) {
 //   T^(i)[u][v] = 1 + sum_{w|S^(n)[w][v]=u} T^(i-1)[w][v]    for 1 ≤ i ≤ n
 //
 function computeTrafficMatrix(successors) {
-  const additive = [];
-  for (const vertex of successors.vertices){
-    additive.push(vertex);
-  }
-  const graph = new EdgeLabeledGraph(additive, 0);
-  const collection = [];
-  for (const source of successors.vertices){
-    for (const destination of successors.vertices){
-      const label = successors.getLabel(source, destination);
-      collection.push([source, destination, label]);
-    }
-  }
-  for (const source of successors.vertices) {
-    graph.increaseLabel(source, source, 1);
-    for (const destination of successors.vertices){
-      for (const values of collection) {
-        if (values[1] === destination) {
-          if (values[0] === source || source === values[2]) {
-            graph.increaseLabel(source, destination, 1);
-            graph.capLabel(source, destination, additive.length);
-          }
+  const graph = new EdgeLabeledGraph(successors.vertices, 1);
+  for (const u of successors.vertices){
+    for (const v of successors.vertices){
+      for (const w of successors.vertices){
+        const label = successors.getLabel(w, v);
+        if (u === label){
+          graph.increaseLabel(u, v, graph.getLabel(w, v));
         }
       }
     }
