@@ -131,11 +131,24 @@ function computeTrafficMatrix(successors) {
     additive.push(vertex);
   }
   const graph = new EdgeLabeledGraph(additive, 0);
+  const collection = [];
   for (const source of successors.vertices){
     for (const destination of successors.vertices){
       const label = successors.getLabel(source, destination);
-      if (destination === label || destination === source) {
-        graph.increaseLabel(source, destination, 1);
+      collection.push([source, destination, label]);
+    }
+  }
+  for (const source of successors.vertices) {
+    for (const destination of successors.vertices){
+      for (const values of collection) {
+        if (source === destination) {
+          graph.increaseLabel(source, destination, 1);
+        } else if (values[1] === destination) {
+          if (values[0] === source || source === values[2]) {
+            graph.increaseLabel(source, destination, 1);
+          }
+        }
+        graph.capLabel(source, destination, additive.length);
       }
     }
   }
