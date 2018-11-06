@@ -38,23 +38,20 @@ class EdgeLabeledGraph {
 
 function computeTransitGraph(city) {
   const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, 'Infinity');
-  const i = 0;
   for (const source of transitGraph.vertices) {
     for (const destination of transitGraph.vertices) {
-      while (i < transitGraph.vertices.length) {
-        if (city.driveGraph.getNeighbors(source).includes(destination) && city.walkGraph.getNeighbors(source).includes(destination)) {
-          if (city.driveGraph.getEdge(source, destination).weight < city.walkGraph.getEdge(source, destination).weight) {
-            transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight * 2);
-          } else {
-            transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
-          }
-        } else if (city.walkGraph.getNeighbors(source).includes(destination)) {
-          transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
-        } else if (city.driveGraph.getNeighbors(source).includes(destination)){
+      if (city.driveGraph.getNeighbors(source).includes(destination) && city.walkGraph.getNeighbors(source).includes(destination)) {
+        if (city.driveGraph.getEdge(source, destination).weight < city.walkGraph.getEdge(source, destination).weight) {
           transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight * 2);
         } else {
-          continue;
+          transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
         }
+      } else if (city.walkGraph.getNeighbors(source).includes(destination)) {
+        transitGraph.setLabel(source, destination, city.walkGraph.getEdge(source, destination).weight);
+      } else if (city.driveGraph.getNeighbors(source).includes(destination)){
+        transitGraph.setLabel(source, destination, city.driveGraph.getEdge(source, destination).weight);
+      } else {
+        continue;
       }
     }
   }
