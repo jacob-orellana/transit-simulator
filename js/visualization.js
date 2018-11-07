@@ -81,6 +81,11 @@ class VertexDot extends Subwidget {
     });
     owner.svg.circle(this.element, 0, 0, owner.option('vertexRadius'), owner.option('vertexStyle'));
     owner.svg.circle(this.highlight, 0, 0, owner.option('vertexRadius') + owner.option('selectorPadding'), owner.option('fillSelectorStyle'));
+    this.refresh();
+  }
+
+  refresh(value) {
+    $(this.element).children()
   }
 }
 
