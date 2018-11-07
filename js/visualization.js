@@ -1,4 +1,4 @@
-/* globals transitVisualizationDefaultOptions Placement ThrottledSimulation */
+/* globals transitVisualizationDefaultOptions Placement ThrottledSimulation computeHeatMap */
 
 const PRIMARY_BUTTON = 1;
 
@@ -73,7 +73,7 @@ class Subwidget {
 }
 
 class VertexDot extends Subwidget {
-  constructor(owner, vertex) {
+  constructor(owner, vertex, heat, averageHeat) {
     super(owner, vertex, {
       class: 'vertex',
       id: sanitizeAttributeValue(vertex.name),
@@ -81,11 +81,17 @@ class VertexDot extends Subwidget {
     });
     owner.svg.circle(this.element, 0, 0, owner.option('vertexRadius'), owner.option('vertexStyle'));
     owner.svg.circle(this.highlight, 0, 0, owner.option('vertexRadius') + owner.option('selectorPadding'), owner.option('fillSelectorStyle'));
-    this.refresh();
+    this.refresh(heat, averageHeat);
   }
 
-  refresh(value) {
-    $(this.element).children()
+  refresh(heat, averageHeat) {
+    if (heat <= averageHeat){
+      $(this.element).animate({
+        svgOpacity: 0.5,
+        svgStroke: 'red',
+        // svgTransform: String(new Placement(this._entity.vertex.position, 0)),
+      });
+    }
   }
 }
 
@@ -300,8 +306,18 @@ $.widget('transit.visualization', {
       this._edgePavements.set(edge, new EdgePavement(this, edge));
     }
     this._vertexDots = new Map();
+    this._heatMap = computeHeatMap(this._city);
+    let averageHeat = 0;
+    let count = 0;
+    for (const key of this._heatMap.keys()){
+      averageHeat += this._heatMap.get(key);
+      ++count;
+    }
+    averageHeat /= count;
+    console.log(averageHeat);
+
     for (const vertex of this._city.walkGraph.vertices) {
-      this._vertexDots.set(vertex, new VertexDot(this, vertex));
+      this._vertexDots.set(vertex, new VertexDot(this, vertex, this._heatMap.get(vertex), averageHeat));
     }
     this._patchTrace = undefined;
     this._patchPreviewTrace = undefined;
