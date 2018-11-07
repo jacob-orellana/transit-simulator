@@ -37,29 +37,21 @@ class EdgeLabeledGraph {
 }
 
 function computeTransitGraph(city) {
-  const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, '');
+  const transitGraph = new EdgeLabeledGraph(city.walkGraph.vertices, Infinity);
   for (const vertexOne of transitGraph.vertices) {
     for (const vertexTwo of transitGraph.vertices){
-      if (vertexOne !== vertexTwo) {
-        const walkCandidate = city.walkGraph.getEdge(vertexOne, vertexTwo);
-        if (walkCandidate !== undefined){
-          transitGraph.setLabel(vertexOne, vertexTwo, walkCandidate.weight);
-        } else {
-          transitGraph.setLabel(vertexOne, vertexTwo, Infinity);
-        }
-      } else {
-        transitGraph.setLabel(vertexOne, vertexTwo, Infinity);
+      const walkCandidate = city.walkGraph.getEdge(vertexOne, vertexTwo);
+      if (walkCandidate !== undefined){
+        transitGraph.setLabel(vertexOne, vertexTwo, walkCandidate.weight);
       }
     }
   }
   for (const i of transitGraph.vertices){
     for (const j of transitGraph.vertices){
-      if (i !== j) {
-        if (city.driveGraph.getEdge(i, j) !== undefined) {
-          const candidate = city.driveGraph.getEdge(i, j).weight;
-          if (transitGraph.getLabel(i, j) > 2 * candidate){
-            transitGraph.setLabel(i, j, 2 * candidate);
-          }
+      if (city.driveGraph.getEdge(i, j) !== undefined) {
+        const candidate = city.driveGraph.getEdge(i, j).weight;
+        if (transitGraph.getLabel(i, j) > 2 * candidate) {
+          transitGraph.setLabel(i, j, 2 * candidate);
         }
       }
     }
