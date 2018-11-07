@@ -138,7 +138,7 @@ QUnit.test('smoke test computeTransitGraph', (assert) => {
 
 QUnit.test('maximum of two test computeTransitGraph', (assert) => {
   const transitGraph = computeTransitGraph(CITY_MAXIMUM_OF_TWO);
-  assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,2); (a,c,4); (a,d,Infinity); (b,a,2); (b,b,Infinity); (b,c,Infinity); (b,d,Infinity); (c,a,4); (c,b,Infinity); (c,c,Infinity); (c,d,2); (d,a,Infinity); (d,b,Infinity); (d,c,2); (d,d,Infinity)');
+  assert.deepEqual(toTriples(transitGraph), '(a,a,Infinity); (a,b,2); (a,c,4); (a,d,Infinity); (b,a,2); (b,b,Infinity); (b,c,6); (b,d,Infinity); (c,a,4); (c,b,6); (c,c,Infinity); (c,d,1); (d,a,Infinity); (d,b,Infinity); (d,c,1); (d,d,Infinity)');
 });
 
 QUnit.test('maximum of four test computeTransitGraph', (assert) => {
@@ -157,19 +157,19 @@ QUnit.test('smoke test computeShortestPathSuccessors', (assert) => {
   assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,a); (c,a,a); (c,b,a); (c,c,)');
 });
 
-QUnit.test('maximum of two test computeShortestPathSuccessors', (assert) => { // TO DO
-  const transitGraph = fromTriples('(a,a,Infinity); (a,b,2); (a,c,4); (a,d,6); (b,a,2); (b,b,Infinity); (b,c,6); (b,d,8); (c,c,Infinity); (c,a,4); (c,b,6); (c,d,2); (d,a,6); (d,b,8); (d,c,2); (d,d,Infinity)');
+QUnit.test('maximum of two test computeShortestPathSuccessors', (assert) => {
+  const transitGraph = fromTriples('(a,a,Infinity); (a,b,2); (a,c,4); (a,d,6); (b,a,2); (b,b,Infinity); (b,c,6); (b,d,8); (c,a,4); (c,b,6); (c,c,Infinity); (c,d,2); (d,a,6); (d,b,8); (d,c,2); (d,d,Infinity)');
   const successors = computeShortestPathSuccessors(transitGraph);
-  assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,c); (a,d,d); (b,a,a); (b,b,); (b,c,c); (b,d,d); (c,a,a); (c,b,b); (c,c,); (c,d,d); (d,a,a); (d,b,b); (d,c,c); (d,d,)');
+  assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,c); (a,d,c); (b,a,a); (b,b,); (b,c,a); (b,d,a); (c,a,a); (c,b,a); (c,c,); (c,d,d); (d,a,c); (d,b,c); (d,c,c); (d,d,)');
 });
 
-QUnit.test('degree four test computeShortestPathSuccessors', (assert) => { // TO DO
+QUnit.test('degree four test computeShortestPathSuccessors', (assert) => {
   const transitGraph = fromTriples('(a,a,Infinity); (a,b,2); (a,c,2); (b,a,2); (b,b,Infinity); (b,c,2); (c,a,2); (c,b,2); (c,c,Infinity)');
   const successors = computeShortestPathSuccessors(transitGraph);
   assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,c); (c,a,a); (c,b,b); (c,c,)');
 });
 
-QUnit.test('infinite steps test computeShortestPathSuccessors', (assert) => { // TO DO
+QUnit.test('infinite steps test computeShortestPathSuccessors', (assert) => {
   const transitGraph = fromTriples('(a,a,Infinity); (a,b,1); (a,c,Infinity); (b,a,1); (b,b,Infinity); (b,c,Infinity); (c,a,Infinity); (c,b,Infinity); (c,c,Infinity)');
   const successors = computeShortestPathSuccessors(transitGraph);
   assert.deepEqual(toTriples(successors), '(a,a,); (a,b,b); (a,c,); (b,a,a); (b,b,); (b,c,); (c,a,); (c,b,); (c,c,)');
@@ -181,22 +181,22 @@ QUnit.test('smoke test computeTrafficMatrix', (assert) => {
   assert.deepEqual(toTriples(traffic), '(a,a,3); (a,b,2); (a,c,2); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
 });
 
-QUnit.test('smoke test computeInfiniteTrafficMatrix', (assert) => {
+QUnit.test('maximum of four  test computeTrafficMatrix', (assert) => {
+  const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,c); (c,a,a); (c,b,b); (c,c,)');
+  const traffic = computeTrafficMatrix(successors);
+  assert.deepEqual(toTriples(traffic), '(a,a,3); (a,b,1); (a,c,1); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
+});
+
+QUnit.test('infinite steps test computeTrafficMatrix', (assert) => {
   const successors = fromTriples('(a,a,); (a,b,b); (a,c,); (b,a,a); (b,b,); (b,c,); (c,a,); (c,b,); (c,c,)');
   const traffic = computeTrafficMatrix(successors);
   assert.deepEqual(toTriples(traffic), '(a,a,2); (a,b,1); (a,c,1); (b,a,1); (b,b,2); (b,c,1); (c,a,1); (c,b,1); (c,c,1)');
 });
 
-QUnit.test('maximum of two test computerTraffixMatrix', (assert) => {
+QUnit.test('maximum of two test computeTraffixMatrix', (assert) => {
   const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (a,d,d); (b,a,a); (b,b,); (b,c,c); (b,d,d); (c,a,a); (c,b,b); (c,c,); (c,d,d); (d,a,a); (d,b,b); (d,c,c); (d,d,)');
   const traffic = computeTrafficMatrix(successors);
   assert.deepEqual(toTriples(traffic), '(a,a,4); (a,b,1); (a,c,1); (a,d,1); (b,a,1); (b,b,4); (b,c,1); (b,d,1); (c,a,1); (c,b,1); (c,c,4); (c,d,1); (d,a,1); (d,b,1); (d,c,1); (d,d,4)');
-});
-
-QUnit.test('degree four test computerTraffixMatrix', (assert) => {
-  const successors = fromTriples('(a,a,); (a,b,b); (a,c,c); (b,a,a); (b,b,); (b,c,c); (c,a,a); (c,b,b); (c,c,)');
-  const traffic = computeTrafficMatrix(successors);
-  assert.deepEqual(toTriples(traffic), '(a,a,3); (a,b,1); (a,c,1); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
 });
 
 QUnit.test('smoke test computeHeatFromTraffic', (assert) => {
@@ -208,6 +208,33 @@ QUnit.test('smoke test computeHeatFromTraffic', (assert) => {
   assert.deepEqual(heat.get('c'), 5);
 });
 
+QUnit.test('maximum of two  test computeHeatFromTraffic', (assert) => { // To do
+  const traffic = fromTriples('(a,a,3); (a,b,2); (a,c,2); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
+  const heat = computeHeatFromTraffic(traffic);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get('a'), 7); // fromTriples will give us string keys, not vertex keys
+  assert.deepEqual(heat.get('b'), 5);
+  assert.deepEqual(heat.get('c'), 5);
+});
+
+QUnit.test('maximum of four test computeHeatFromTraffic', (assert) => {
+  const traffic = fromTriples('(a,a,3); (a,b,1); (a,c,1); (b,a,1); (b,b,3); (b,c,1); (c,a,1); (c,b,1); (c,c,3)');
+  const heat = computeHeatFromTraffic(traffic);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get('a'), 5); // fromTriples will give us string keys, not vertex keys
+  assert.deepEqual(heat.get('b'), 5);
+  assert.deepEqual(heat.get('c'), 5);
+});
+
+QUnit.test('infinite test computeHeatFromTraffic', (assert) => {
+  const traffic = fromTriples('(a,a,2); (a,b,1); (a,c,1); (b,a,1); (b,b,2); (b,c,1); (c,a,1); (c,b,1); (c,c,1)');
+  const heat = computeHeatFromTraffic(traffic);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get('a'), 4); // fromTriples will give us string keys, not vertex keys
+  assert.deepEqual(heat.get('b'), 4);
+  assert.deepEqual(heat.get('c'), 3);
+});
+
 QUnit.test('smoke test computeHeatMap', (assert) => {
   const a = CITY_FOR_SMOKE_TESTS.walkGraph.vertices.find((vertex) => vertex.name === 'a');
   const b = CITY_FOR_SMOKE_TESTS.walkGraph.vertices.find((vertex) => vertex.name === 'b');
@@ -217,4 +244,37 @@ QUnit.test('smoke test computeHeatMap', (assert) => {
   assert.deepEqual(heat.get(a), 7);
   assert.deepEqual(heat.get(b), 5);
   assert.deepEqual(heat.get(c), 5);
+});
+
+QUnit.test('maximum of two test computeHeatMap', (assert) => {
+  const a = CITY_MAXIMUM_OF_TWO.walkGraph.vertices.find((vertex) => vertex.name === 'a');
+  const b = CITY_MAXIMUM_OF_TWO.walkGraph.vertices.find((vertex) => vertex.name === 'b');
+  const c = CITY_MAXIMUM_OF_TWO.walkGraph.vertices.find((vertex) => vertex.name === 'c');
+  const heat = computeHeatMap(CITY_MAXIMUM_OF_TWO);
+  assert.deepEqual(heat.size, 4);
+  assert.deepEqual(heat.get(a), 7);
+  assert.deepEqual(heat.get(b), 5);
+  assert.deepEqual(heat.get(c), 5);
+});
+
+QUnit.test('maximum of four test computeHeatMap', (assert) => {
+  const a = MAX_DEGREE_FOUR_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'a');
+  const b = MAX_DEGREE_FOUR_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'b');
+  const c = MAX_DEGREE_FOUR_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'c');
+  const heat = computeHeatMap(MAX_DEGREE_FOUR_CITY);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get(a), 5);
+  assert.deepEqual(heat.get(b), 5);
+  assert.deepEqual(heat.get(c), 5);
+});
+
+QUnit.test('infinite test computeHeatMap', (assert) => {
+  const a = INFINITE_STEPS_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'a');
+  const b = INFINITE_STEPS_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'b');
+  const c = INFINITE_STEPS_CITY.walkGraph.vertices.find((vertex) => vertex.name === 'c');
+  const heat = computeHeatMap(INFINITE_STEPS_CITY);
+  assert.deepEqual(heat.size, 3);
+  assert.deepEqual(heat.get(a), 4);
+  assert.deepEqual(heat.get(b), 4);
+  assert.deepEqual(heat.get(c), 3);
 });
