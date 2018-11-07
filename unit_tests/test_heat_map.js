@@ -252,9 +252,9 @@ QUnit.test('maximum of two test computeHeatMap', (assert) => {
   const c = CITY_MAXIMUM_OF_TWO.walkGraph.vertices.find((vertex) => vertex.name === 'c');
   const heat = computeHeatMap(CITY_MAXIMUM_OF_TWO);
   assert.deepEqual(heat.size, 4);
-  assert.deepEqual(heat.get(a), 7);
+  assert.deepEqual(heat.get(a), 6);
   assert.deepEqual(heat.get(b), 5);
-  assert.deepEqual(heat.get(c), 5);
+  assert.deepEqual(heat.get(c), 6);
 });
 
 QUnit.test('maximum of four test computeHeatMap', (assert) => {
