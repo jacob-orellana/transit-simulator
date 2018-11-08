@@ -73,7 +73,7 @@ class Subwidget {
 }
 
 class VertexDot extends Subwidget {
-  constructor(owner, vertex, heat, averageHeat) {
+  constructor(owner, vertex, heat) {
     super(owner, vertex, {
       class: 'vertex',
       id: sanitizeAttributeValue(vertex.name),
@@ -81,16 +81,12 @@ class VertexDot extends Subwidget {
     });
     owner.svg.circle(this.element, 0, 0, owner.option('vertexRadius'), owner.option('vertexStyle'));
     owner.svg.circle(this.highlight, 0, 0, owner.option('vertexRadius') + owner.option('selectorPadding'), owner.option('fillSelectorStyle'));
-    this.refresh(heat, averageHeat);
+    this.refresh(heat);
   }
 
-  refresh(heat, averageHeat) {
-    if (heat <= averageHeat){
-      $(this.element).animate({
-        svgOpacity: 0.5,
-        svgStroke: 'red',
-        // svgTransform: String(new Placement(this._entity.vertex.position, 0)),
-      });
+  refresh(heat) {
+    if (heat > 0.0){
+      $(this.element).animate({svgFill: 'rgb(255, 0, 0)'});
     }
   }
 }
@@ -305,19 +301,10 @@ $.widget('transit.visualization', {
     for (const edge of this._city.walkGraph.edges) {
       this._edgePavements.set(edge, new EdgePavement(this, edge));
     }
-    this._vertexDots = new Map();
     this._heatMap = computeHeatMap(this._city);
-    let averageHeat = 0;
-    let count = 0;
-    for (const key of this._heatMap.keys()){
-      averageHeat += this._heatMap.get(key);
-      ++count;
-    }
-    averageHeat /= count;
-    console.log(averageHeat);
-
+    this._vertexDots = new Map();
     for (const vertex of this._city.walkGraph.vertices) {
-      this._vertexDots.set(vertex, new VertexDot(this, vertex, this._heatMap.get(vertex), averageHeat));
+      this._vertexDots.set(vertex, new VertexDot(this, vertex, this._heatMap.get(vertex)));
     }
     this._patchTrace = undefined;
     this._patchPreviewTrace = undefined;
@@ -381,6 +368,9 @@ $.widget('transit.visualization', {
     }
     for (const dot of this._passengerDots.values()) {
       dot.refresh();
+    }
+    for (const vertexDot of this._vertexDots.values()) {
+      vertexDot.refresh(this._heatMap.get(vertexDot.element));
     }
   },
 
