@@ -79,15 +79,21 @@ class VertexDot extends Subwidget {
       id: sanitizeAttributeValue(vertex.name),
       transform: String(new Placement(vertex.position, 0)),
     });
+    this.heat = heat;
     owner.svg.circle(this.element, 0, 0, owner.option('vertexRadius'), owner.option('vertexStyle'));
     owner.svg.circle(this.highlight, 0, 0, owner.option('vertexRadius') + owner.option('selectorPadding'), owner.option('fillSelectorStyle'));
-    this.refresh(heat);
+    this.refresh(this.heat);
   }
 
   refresh(heat) {
-    if (heat > 0.0){
-      $(this.element).animate({svgFill: 'rgb(255, 0, 0)'});
-    }
+    $(this.element).children('circle').each((index, element) => {
+      const i = 109;
+      if (heat > i) {
+        $(element).animate({svgFill: 'red'});
+      } else {
+        $(element).animate({svgFill: 'green'});
+      }
+    });
   }
 }
 
@@ -336,6 +342,9 @@ $.widget('transit.visualization', {
     if (this._patchPreviewTrace !== undefined) {
       this._patchPreviewTrace.refresh();
     }
+    if (this._heatMap !== undefined) {
+      this._heatMap = computeHeatMap(this._city);
+    }
     const moribundRoutes = new Set(this._routeTraces.keys());
     const moribundBuses = new Set(this._busBoxes.keys());
     for (const route of this._city.routes) {
@@ -369,8 +378,12 @@ $.widget('transit.visualization', {
     for (const dot of this._passengerDots.values()) {
       dot.refresh();
     }
+    for (const vertex of this._city.walkGraph.vertices) {
+      const vertexDot = this._vertexDots.get(vertex);
+      vertexDot.heat = this._heatMap.get(vertex);
+    }
     for (const vertexDot of this._vertexDots.values()) {
-      vertexDot.refresh(this._heatMap.get(vertexDot.element));
+      vertexDot.refresh(vertexDot.heat);
     }
   },
 
