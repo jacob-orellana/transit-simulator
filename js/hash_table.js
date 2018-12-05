@@ -1,4 +1,4 @@
-/* exported HashTable */
+/* exported HashTable mod isPseudoPrime increaseToPseudoPrime createBuckets */
 
 function mod(value, modulus) {
   const result = value % modulus;
