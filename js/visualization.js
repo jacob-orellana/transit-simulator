@@ -88,7 +88,7 @@ class VertexDot extends Subwidget {
   refresh(heat) {
     $(this.element).children('circle').each((index, element) => {
       const i = 109;
-      if (heat > i) {
+      if (this.heat > i) {
         $(element).animate({svgFill: 'red'});
       } else {
         $(element).animate({svgFill: 'green'});
@@ -342,9 +342,10 @@ $.widget('transit.visualization', {
     if (this._patchPreviewTrace !== undefined) {
       this._patchPreviewTrace.refresh();
     }
-    if (this._heatMap !== undefined) {
-      this._heatMap = computeHeatMap(this._city);
-    }
+    // if (this._heatMap !== undefined) {
+    //   console.log('this')
+    //   this._heatMap = computeHeatMap(this._city);
+    // }
     const moribundRoutes = new Set(this._routeTraces.keys());
     const moribundBuses = new Set(this._busBoxes.keys());
     for (const route of this._city.routes) {
@@ -380,10 +381,7 @@ $.widget('transit.visualization', {
     }
     for (const vertex of this._city.walkGraph.vertices) {
       const vertexDot = this._vertexDots.get(vertex);
-      vertexDot.heat = this._heatMap.get(vertex);
-    }
-    for (const vertexDot of this._vertexDots.values()) {
-      vertexDot.refresh(vertexDot.heat);
+      vertexDot.refresh(this._heatMap.get(vertex));
     }
   },
 
