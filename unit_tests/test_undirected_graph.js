@@ -137,6 +137,8 @@ QUnit.test('finding a path from the last vertex with a shortcut available', (ass
   assert.deepEqual(shortestUndirectedPath(graph, 'c', (vertex) => vertex === 'c'), ['c']);
 });
 
+/* The following weighted test cases test finding the shortest path to a vertex when projections exist of that vertex */
+
 QUnit.test('first weighted graph test case for projections', (assert) => {
   const graph = new UndirectedGraph();
   graph.addVertex('s');
