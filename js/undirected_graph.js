@@ -15,8 +15,6 @@ function calculateVertexCode(letter) {
   let value = 0;
   let car = 59;
   value += letter.codePointAt(0) * car;
-  car *= 59;
-  console.log(value);
   return value;
 }
 
@@ -61,8 +59,17 @@ class UndirectedGraph {
   }
 
   getNeighbors(vertex) {
-    console.assert(this.hashGraph.has(vertex), 'Graph does not have that vertex.');
-    return this.hashGraph.get(vertex)._buckets[this.hashGraph._hashFunction(vertex)].map((pair) => pair[0])
+    // console.assert(this.hashGraph.has(vertex), 'Graph does not have that vertex.');
+    console.log(this.hashGraph.get(vertex)._buckets);
+    console.log(this.hashGraph.get(vertex)._buckets[this.hashGraph._hashFunction(vertex)].map((pair) => pair[0]));
+    const result = [];
+    for (const bucket of this.hashGraph.get(vertex)._buckets) {
+      if (bucket[0] !== undefined) {
+        result.push(bucket[0][0]);
+      }
+    }
+    return result;
+    // return this.hashGraph.get(vertex)._buckets[0].map((pair) => pair[0]);
     // for (const vert of this.hashGraph.get(vertex)._buckets){
     //   console.log(this.hashGraph.get(vertex)._buckets);
     //   if (vert[0] !== undefined) {
