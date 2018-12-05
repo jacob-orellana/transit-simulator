@@ -5,15 +5,13 @@ QUnit.module('hash_table.js');
 
 // CATEGORY PARTITION METHOD
 /*
-  Categories  | Values
-  -----------------------
-  buckets     | 0  7  13
-              |
-  size        | 0  1  2
-              |
-  hashFunction| f(x) = x + 4  f(x) = x f(x) = 4
+  - You could have 7 buckets or more than 7 buckets.
+  - The size of your hash table could  be 0 or greater than zero.
+  - The hashFunction you pass when your create a table can return the element or change the element.
 */
 
+// This test case works with a hash table that is empty, having 7 buckets, and
+// a hasFunction that doesn't change the element.
 QUnit.test('test an empty has table', (assert) => {
   const testHash = new HashTable((element) => element);
   assert.deepEqual(testHash.size, 0);
@@ -28,6 +26,8 @@ QUnit.test('test an empty has table', (assert) => {
   assert.deepEqual(testHash.delete(9), true);
 });
 
+// This test case works with a hash table that is not empty, has more than 7
+// buckets and has a hashFunction that does change the element.
 QUnit.test('test a resize', (assert) => {
   const testHash = new HashTable((element) => element + 4);
   assert.deepEqual(testHash._buckets.length, 7);
@@ -42,19 +42,11 @@ QUnit.test('test a resize', (assert) => {
   assert.deepEqual(testHash._buckets[0], [[13, 3]]);
   assert.deepEqual(testHash._buckets[14], [[10, 0]]);
   assert.deepEqual(testHash._buckets[8], [[4, 1], [21, 4]]);
-});
-
-QUnit.test('test elements in the same bucket', (assert) => {
-  const testHash = new HashTable((element) => element);
-  testHash.set(4, 1);
-  // testHash.set(4, 4);
-  // testHash.set(4, 10);
-  // testHash.set(4, 13);
-  // testHash.set(4, 21);
-  // test methods when multiple numbers are in one buckets
-  console.log(testHash._buckets);
-  assert.deepEqual(testHash._buckets[4], [[4, 21]]);
-  assert.deepEqual(testHash.has(4), true);
-  assert.deepEqual(testHash.get(4), 9);
-  assert.deepEqual(testHash.delete(4), true);
+  // test the other function on resized hash table
+  assert.deepEqual(testHash.size, 5);
+  assert.deepEqual(testHash.has(10), true);
+  assert.deepEqual(testHash.has(11), false);
+  assert.deepEqual(testHash.get(13), 3);
+  assert.deepEqual(testHash.delete(9), false);
+  assert.deepEqual(testHash.delete(10), true);
 });
