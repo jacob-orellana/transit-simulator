@@ -9,7 +9,8 @@ QUnit.test('find the nonexistent neighbors of a vertex', (assert) => {
   graph.addVertex('b');
   graph.addVertex('c');
   graph.addEdge('b', new UndirectedEdge(7), 'c');
-  assert.deepEqual(graph.getNeighbors('a').sort(), []);
+  console.log(graph);
+  assert.deepEqual(graph.getNeighbors('a'), []);
 });
 
 QUnit.test('find the neighbors of a vertex', (assert) => {
@@ -20,7 +21,7 @@ QUnit.test('find the neighbors of a vertex', (assert) => {
   graph.addEdge('a', new UndirectedEdge(2), 'b');
   graph.addEdge('b', new UndirectedEdge(7), 'c');
   graph.addEdge('a', new UndirectedEdge(8), 'c');
-  assert.deepEqual(graph.getNeighbors('a').sort(), ['b', 'c']);
+  assert.deepEqual(graph.getNeighbors('a'), ['b', 'c']);
 });
 
 // Test if the class method getNeighbors return all getNeighbors
