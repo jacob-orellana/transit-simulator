@@ -1,5 +1,5 @@
 /* exported UndirectedEdge UndirectedGraph shortestUndirectedPath */
-/* globals identity PriorityQueue */
+/* globals identity PriorityQueue HashTable */
 
 class UndirectedEdge {
   constructor(weight) {
@@ -11,56 +11,73 @@ class UndirectedEdge {
   }
 }
 
+function calculateVertexCode(vertex) {
+  const candidate = vertex.name.charCodeAt(0);
+  return candidate;
+}
+
 class UndirectedGraph {
   constructor() {
     this.vertices = [];
     this.edges = [];
     this.adjacencyMatrix = [];
+    this.hashGraph = new HashTable((vertex) => calculateVertexCode(vertex));
   }
 
   addVertex(vertex) {
-    this.vertices.push(vertex);
-    for (const adjacencyColumn of this.adjacencyMatrix) {
-      adjacencyColumn.push(undefined);
-      console.assert(adjacencyColumn.length === this.vertices.length, 'Vertex count does not match adjacency matrix height.');
-    }
-    this.adjacencyMatrix.push(this.vertices.concat().fill(undefined));
-    console.assert(this.adjacencyMatrix.length === this.vertices.length, 'Vertex count does not match adjacency matrix width.');
+    console.assert(!this.hashGraph.has(vertex), 'Vertex already exists in the graph.');
+    const vertexTable = new HashTable((weight) => calculateVertexCode(weight));
+    this.hashGraph.set(vertex, vertexTable);
+    // for (const adjacencyColumn of this.adjacencyMatrix) {
+    //   adjacencyColumn.push(undefined);
+    //   console.assert(adjacencyColumn.length === this.vertices.length, 'Vertex count does not match adjacency matrix height.');
+    // }
+    // this.adjacencyMatrix.push(this.vertices.concat().fill(undefined));
+    // console.assert(this.adjacencyMatrix.length === this.vertices.length, 'Vertex count does not match adjacency matrix width.');
   }
 
   addEdge(source, edge, destination) {
-    const sourceIndex = this.vertices.indexOf(source);
-    console.assert(sourceIndex >= 0, `Edge ${edge} added to nonexistent vertex ${source}.`);
-    const destinationIndex = this.vertices.indexOf(destination);
-    console.assert(destinationIndex >= 0, `Edge ${edge} added to nonexistent vertex ${destination}.`);
-    if (sourceIndex !== destinationIndex) {
-      console.assert(this.adjacencyMatrix[sourceIndex][destinationIndex] === undefined,
-        `Added edge ${edge}, which conflicts with the edge ${this.adjacencyMatrix[sourceIndex][destinationIndex]}.`);
-      this.edges.push(edge);
-      this.adjacencyMatrix[sourceIndex][destinationIndex] = edge;
-      this.adjacencyMatrix[destinationIndex][sourceIndex] = edge.reverse();
-    }
+    console.assert(this.hashGraph.has(source), 'Graph does not have that vertex source.');
+    console.assert(this.hashGraph.has(destination), 'Graph does not have that vertex destination.');
+    this.hashGraph.get(source).set(destination, edge);
+    this.hashGraph.get(destination).set(source, edge.reverse());
+    // const sourceIndex = this.vertices.indexOf(source);
+    // console.assert(sourceIndex >= 0, `Edge ${edge} added to nonexistent vertex ${source}.`);
+    // const destinationIndex = this.vertices.indexOf(destination);
+    // console.assert(destinationIndex >= 0, `Edge ${edge} added to nonexistent vertex ${destination}.`);
+    // if (sourceIndex !== destinationIndex) {
+    //   console.assert(this.adjacencyMatrix[sourceIndex][destinationIndex] === undefined,
+    //     `Added edge ${edge}, which conflicts with the edge ${this.adjacencyMatrix[sourceIndex][destinationIndex]}.`);
+    //   this.edges.push(edge);
+    //   this.adjacencyMatrix[sourceIndex][destinationIndex] = edge;
+    //   this.adjacencyMatrix[destinationIndex][sourceIndex] = edge.reverse();
+    // }
   }
 
   getNeighbors(vertex) {
-    const vertexIndex = this.vertices.indexOf(vertex);
-    console.assert(vertexIndex >= 0, `Cannot get neighbors of nonexistent vertex ${vertex}.`);
-    const adjacencyColumn = this.adjacencyMatrix[vertexIndex];
-    const result = [];
-    for (let i = this.vertices.length; i--;) {
-      if (adjacencyColumn[i] !== undefined) {
-        result.push(this.vertices[i]);
-      }
-    }
-    return result;
+    console.assert(this.hashGraph.has(vertex), 'Graph does not have that vertex.');
+    return this.hashGraph.get(vertex);
+    // const vertexIndex = this.vertices.indexOf(vertex);
+    // console.assert(vertexIndex >= 0, `Cannot get neighbors of nonexistent vertex ${vertex}.`);
+    // const adjacencyColumn = this.adjacencyMatrix[vertexIndex];
+    // const result = [];
+    // for (let i = this.vertices.length; i--;) {
+    //   if (adjacencyColumn[i] !== undefined) {
+    //     result.push(this.vertices[i]);
+    //   }
+    // }
+    // return result;
   }
 
   getEdge(source, destination) {
-    const sourceIndex = this.vertices.indexOf(source);
-    console.assert(sourceIndex >= 0, `Cannot get edge incident on nonexistent vertex ${source}.`);
-    const destinationIndex = this.vertices.indexOf(destination);
-    console.assert(destinationIndex >= 0, `Cannot get edge incident on nonexistent vertex ${destination}.`);
-    return this.adjacencyMatrix[sourceIndex][destinationIndex];
+    console.assert(this.hashGraph.has(source), 'Graph does not have that vertex source.');
+    console.assert(this.hashGraph.has(destination), 'Graph does not have that vertex destination.');
+    return this.hashGraph.get(source).get(destination);
+    // const sourceIndex = this.vertices.indexOf(source);
+    // console.assert(sourceIndex >= 0, `Cannot get edge incident on nonexistent vertex ${source}.`);
+    // const destinationIndex = this.vertices.indexOf(destination);
+    // console.assert(destinationIndex >= 0, `Cannot get edge incident on nonexistent vertex ${destination}.`);
+    // return this.adjacencyMatrix[sourceIndex][destinationIndex];
   }
 }
 
