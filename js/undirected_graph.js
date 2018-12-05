@@ -39,8 +39,10 @@ class UndirectedGraph {
   addEdge(source, edge, destination) {
     console.assert(this.hashGraph.has(source), 'Graph does not have that vertex source.');
     console.assert(this.hashGraph.has(destination), 'Graph does not have that vertex destination.');
-    this.hashGraph.get(source).set(destination, edge);
-    this.hashGraph.get(destination).set(source, edge.reverse());
+    if (source !== destination){
+      this.hashGraph.get(source).set(destination, edge);
+      this.hashGraph.get(destination).set(source, edge.reverse());
+    }
     // const sourceIndex = this.vertices.indexOf(source);
     // console.assert(sourceIndex >= 0, `Edge ${edge} added to nonexistent vertex ${source}.`);
     // const destinationIndex = this.vertices.indexOf(destination);
