@@ -11,9 +11,13 @@ class UndirectedEdge {
   }
 }
 
-function calculateVertexCode(vertex) {
-  // const candidate = vertex.name.charCodeAt(0);
-  return 0;
+function calculateVertexCode(letter) {
+  let value = 0;
+  let car = 59;
+  value += letter.codePointAt(0) * car;
+  car *= 59;
+  console.log(value);
+  return value;
 }
 
 class UndirectedGraph {
@@ -58,7 +62,7 @@ class UndirectedGraph {
 
   getNeighbors(vertex) {
     console.assert(this.hashGraph.has(vertex), 'Graph does not have that vertex.');
-    return this.hashGraph.get(vertex)._buckets[calculateVertexCode(vertex)].map((pair) => pair[0])
+    return this.hashGraph.get(vertex)._buckets[this.hashGraph._hashFunction(vertex)].map((pair) => pair[0])
     // for (const vert of this.hashGraph.get(vertex)._buckets){
     //   console.log(this.hashGraph.get(vertex)._buckets);
     //   if (vert[0] !== undefined) {
