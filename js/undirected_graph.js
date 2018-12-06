@@ -46,6 +46,8 @@ class UndirectedGraph {
       sourceBucket[0].push({[destination]: edge});
       destinationBucket[0].push({[source]: edge});
       this.edges.push(edge);
+      // this.adjacencyMatrix[this.adjacencyMatrix.indexOf(source)][this.adjacencyMatrix.indexOf(destination)] = 1;
+      // this.adjacencyMatrix[this.adjacencyMatrix.indexOf(destination)][this.adjacencyMatrix.indexOf(source)] = 1;
     }
   }
 
