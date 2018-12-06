@@ -32,16 +32,12 @@ QUnit.test('find the nonexistent neighbors of a vertex', (assert) => {
 // testing a vertex that has neighbors
 QUnit.test('find the neighbors of a vertex', (assert) => {
   const graph = new UndirectedGraph(hashFunction);
-  console.log(graph);
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
-  console.log(graph);
   graph.addEdge('a', new UndirectedEdge(2), 'b');
-  console.log(graph);
   graph.addEdge('b', new UndirectedEdge(7), 'c');
   graph.addEdge('a', new UndirectedEdge(8), 'c');
-  console.log(graph);
   assert.deepEqual(graph.getNeighbors('a'), ['b', 'c']);
 });
 
