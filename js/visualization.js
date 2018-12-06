@@ -342,10 +342,6 @@ $.widget('transit.visualization', {
     if (this._patchPreviewTrace !== undefined) {
       this._patchPreviewTrace.refresh();
     }
-    // if (this._heatMap !== undefined) {
-    //   console.log('this')
-    //   this._heatMap = computeHeatMap(this._city);
-    // }
     const moribundRoutes = new Set(this._routeTraces.keys());
     const moribundBuses = new Set(this._busBoxes.keys());
     for (const route of this._city.routes) {
