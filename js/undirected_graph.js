@@ -1,6 +1,7 @@
 /* exported UndirectedEdge UndirectedGraph shortestUndirectedPath */
 /* globals identity PriorityQueue HashTable */
 /* eslint-disable no-magic-numbers */
+/* eslint no-underscore-dangle: 0 */
 
 class UndirectedEdge {
   constructor(weight) {
