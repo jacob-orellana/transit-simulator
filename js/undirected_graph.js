@@ -22,7 +22,6 @@ class UndirectedGraph {
   constructor() {
     this.vertices = [];
     this.edges = [];
-    this.adjacencyMatrix = [];
     this.hashGraph = new HashTable((index) => hashFunction(index));
   }
 
