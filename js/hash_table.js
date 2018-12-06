@@ -41,7 +41,6 @@ const MAXIMUM_LOAD_FACTOR = 2 / 3; // eslint-disable-line no-magic-numbers
 class HashTable {
   constructor(hashFunction) {
     this._hashFunction = (element) => mod(hashFunction(element), this._buckets.length);
-    this.keys = [];
     this.clear();
   }
 
