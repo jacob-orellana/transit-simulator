@@ -1,17 +1,30 @@
 QUnit.module('undirected_graph.js');
 /* globals QUnit UndirectedEdge UndirectedGraph shortestUndirectedPath */
 /* eslint-disable no-magic-numbers */
-//
 
+// CATEGORY-PARTITION METHOD
+/*
+  - the list of verticies could be empty or contain verticies
+  - the list of edges could be empty or contain edges
+*/
+
+// testing a vertex that has no neighbors
 QUnit.test('find the nonexistent neighbors of a vertex', (assert) => {
   const graph = new UndirectedGraph();
+  // test whether the lists have no contents
+  assert.deepEqual(graph.vertices.length, 0);
+  assert.deepEqual(graph.edges.length, 0);
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
   graph.addEdge('b', new UndirectedEdge(7), 'c');
   assert.deepEqual(graph.getNeighbors('a'), []);
+  // test whether the lists have contents
+  assert.deepEqual(graph.vertices.length, 3);
+  assert.deepEqual(graph.edges.length, 1);
 });
 
+// testing a vertex that has neighbors
 QUnit.test('find the neighbors of a vertex', (assert) => {
   const graph = new UndirectedGraph();
   console.log(graph);
@@ -41,6 +54,7 @@ QUnit.test('find the nonconnected neighbors of a vertex', (assert) => {
   assert.deepEqual(graph.getNeighbors('a').sort(), ['b', 'c', 'd']);
 });
 
+// testing a self edge
 QUnit.test('retrieve a nonexistent self edge', (assert) => {
   const graph = new UndirectedGraph();
   graph.addVertex('a');
@@ -49,9 +63,12 @@ QUnit.test('retrieve a nonexistent self edge', (assert) => {
   graph.addEdge('a', new UndirectedEdge(2), 'a');
   graph.addEdge('b', new UndirectedEdge(7), 'c');
   graph.addEdge('a', new UndirectedEdge(8), 'c');
+  // test the length of the edges
+  assert.deepEqual(graph.edges.length, 2);
   assert.deepEqual(graph.getEdge('a', 'a'), undefined);
 });
 
+// testing edges that don't exist
 QUnit.test('retrieve a nonexistent edge given two vertices', (assert) => {
   const graph = new UndirectedGraph();
   graph.addVertex('a');
@@ -73,6 +90,7 @@ QUnit.test('retrieve an existent self edge as undefined', (assert) => {
   assert.deepEqual(graph.getEdge('a', 'a', undefined));
 });
 
+// testing an edge that does exist
 QUnit.test('retrieve an edge given two vertices', (assert) => {
   const graph = new UndirectedGraph();
   graph.addVertex('a');
