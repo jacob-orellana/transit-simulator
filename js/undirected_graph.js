@@ -1,5 +1,6 @@
 /* exported UndirectedEdge UndirectedGraph shortestUndirectedPath */
 /* globals identity PriorityQueue HashTable */
+/* eslint-disable no-magic-numbers */
 
 class UndirectedEdge {
   constructor(weight) {
@@ -11,10 +12,8 @@ class UndirectedEdge {
   }
 }
 
-function calculateVertexCode(letter) {
-  let value = 0;
-  let car = 59;
-  value += letter.codePointAt(0) * car;
+function hashFunction(letter) {
+  const value = 59 * (String(letter).codePointAt(0) || 0);
   return value;
 }
 
@@ -23,13 +22,14 @@ class UndirectedGraph {
     this.vertices = [];
     this.edges = [];
     this.adjacencyMatrix = [];
-    this.hashGraph = new HashTable((vertex) => calculateVertexCode(vertex));
+    this.hashGraph = new HashTable((index) => hashFunction(index));
   }
 
   addVertex(vertex) {
-    console.assert(!this.hashGraph.has(vertex), 'Vertex already exists in the graph.');
-    const vertexTable = new HashTable((weight) => calculateVertexCode(weight));
-    this.hashGraph.set(vertex, vertexTable);
+    console.assert(!this.vertices.includes(vertex), 'Vertex already exists in the graph.');
+    this.vertices.push(vertex);
+    this.hashGraph.set(vertex);
+    // this.vertices.push(vertex);
     // for (const adjacencyColumn of this.adjacencyMatrix) {
     //   adjacencyColumn.push(undefined);
     //   console.assert(adjacencyColumn.length === this.vertices.length, 'Vertex count does not match adjacency matrix height.');
@@ -41,10 +41,21 @@ class UndirectedGraph {
   addEdge(source, edge, destination) {
     console.assert(this.hashGraph.has(source), 'Graph does not have that vertex source.');
     console.assert(this.hashGraph.has(destination), 'Graph does not have that vertex destination.');
+    const sourceBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(source)];
+    const destinationBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(destination)];
     if (source !== destination){
-      this.hashGraph.get(source).set(destination, edge);
-      this.hashGraph.get(destination).set(source, edge.reverse());
+      if (sourceBucket[0][1] === undefined){
+        sourceBucket[0].pop();
+      }
+      if (destinationBucket[0][1] === undefined){
+        destinationBucket[0].pop();
+      }
+      sourceBucket[0].push({[destination]: edge});
+      destinationBucket[0].push({[source]: edge});
+      this.edges.push(edge);
     }
+    // const sourceBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(source)];
+    // console.log(sourceBucket);
     // const sourceIndex = this.vertices.indexOf(source);
     // console.assert(sourceIndex >= 0, `Edge ${edge} added to nonexistent vertex ${source}.`);
     // const destinationIndex = this.vertices.indexOf(destination);
@@ -59,24 +70,15 @@ class UndirectedGraph {
   }
 
   getNeighbors(vertex) {
-    // console.assert(this.hashGraph.has(vertex), 'Graph does not have that vertex.');
-    console.log(this.hashGraph.get(vertex)._buckets);
-    console.log(this.hashGraph.get(vertex)._buckets[this.hashGraph._hashFunction(vertex)].map((pair) => pair[0]));
+    console.assert(this.hashGraph.has(vertex), 'Graph does not have that vertex.');
+    const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(vertex)][0];
     const result = [];
-    for (const bucket of this.hashGraph.get(vertex)._buckets) {
-      if (bucket[0] !== undefined) {
-        result.push(bucket[0][0]);
+    for (const entry of bucket) {
+      if (typeof entry === 'object'){
+        result.push(Object.entries(entry)[0][0]);
       }
     }
     return result;
-    // return this.hashGraph.get(vertex)._buckets[0].map((pair) => pair[0]);
-    // for (const vert of this.hashGraph.get(vertex)._buckets){
-    //   console.log(this.hashGraph.get(vertex)._buckets);
-    //   if (vert[0] !== undefined) {
-    //     result.push(vert);
-    //   }
-    // }
-    // return result;
     // const vertexIndex = this.vertices.indexOf(vertex);
     // console.assert(vertexIndex >= 0, `Cannot get neighbors of nonexistent vertex ${vertex}.`);
     // const adjacencyColumn = this.adjacencyMatrix[vertexIndex];
@@ -92,7 +94,18 @@ class UndirectedGraph {
   getEdge(source, destination) {
     console.assert(this.hashGraph.has(source), 'Graph does not have that vertex source.');
     console.assert(this.hashGraph.has(destination), 'Graph does not have that vertex destination.');
-    return this.hashGraph.get(source).get(destination);
+    const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(source)][0];
+    let result = undefined;
+    if (bucket[1] !== undefined){
+      let vertex = 0;
+      for (let i = 1; i < bucket.length; ++i){
+        vertex = bucket[i];
+        if (destination === Object.entries(vertex)[0][0]){
+          result = Object.entries(vertex)[0][1];
+        }
+      }
+    }
+    return result;
     // const sourceIndex = this.vertices.indexOf(source);
     // console.assert(sourceIndex >= 0, `Cannot get edge incident on nonexistent vertex ${source}.`);
     // const destinationIndex = this.vertices.indexOf(destination);

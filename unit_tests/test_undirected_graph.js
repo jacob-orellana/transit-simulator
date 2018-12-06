@@ -9,7 +9,6 @@ QUnit.test('find the nonexistent neighbors of a vertex', (assert) => {
   graph.addVertex('b');
   graph.addVertex('c');
   graph.addEdge('b', new UndirectedEdge(7), 'c');
-  console.log(graph);
   assert.deepEqual(graph.getNeighbors('a'), []);
 });
 
@@ -113,7 +112,6 @@ QUnit.test('find a path from a vertex to a neighbor with a shortcut available', 
   graph.addEdge('a', new UndirectedEdge(2), 'b');
   graph.addEdge('b', new UndirectedEdge(7), 'c');
   graph.addEdge('a', new UndirectedEdge(10), 'c');
-  // the search should find the shortest path in terms of number of vertices, not total weighted length
   assert.deepEqual(shortestUndirectedPath(graph, 'a', (vertex) => vertex === 'c'), ['a', 'b', 'c']);
 });
 
@@ -144,7 +142,7 @@ QUnit.test('first weighted graph test case for projections', (assert) => {
   graph.addVertex('s');
   graph.addVertex('t');
   graph.addVertex('t\'');
-  graph.addEdge('s', new UndirectedEdge(2), 't\'');
+  graph.addEdge('s', new UndirectedEdge(5), 't\'');
   graph.addEdge('s', new UndirectedEdge(1), 't');
   assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), ['s', 't']);
 });
