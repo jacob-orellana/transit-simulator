@@ -14,8 +14,11 @@ class UndirectedEdge {
 }
 
 class UndirectedGraph {
-  constructor(hashFunction) {
-    this.hashGraph = new HashTable((index) => hashFunction(index));
+  constructor(hashfunction = (letter) => {
+    const value = 59 * (String(letter).codePointAt(0) || 0);
+    return value;
+  }) {
+    this.hashGraph = new HashTable((index) => hashfunction(index));
     this.vertices = [];
     this.edges = [];
   }

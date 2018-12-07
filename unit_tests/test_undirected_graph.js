@@ -8,14 +8,9 @@ QUnit.module('undirected_graph.js');
   - the list of edges could be empty or contain edges
 */
 
-function hashFunction(letter) {
-  const value = 59 * (String(letter).codePointAt(0) || 0);
-  return value;
-}
-
 // testing a vertex that has no neighbors
 QUnit.test('find the nonexistent neighbors of a vertex', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   // test whether the lists have no contents
   assert.deepEqual(graph.vertices.length, 0);
   assert.deepEqual(graph.edges.length, 0);
@@ -31,20 +26,24 @@ QUnit.test('find the nonexistent neighbors of a vertex', (assert) => {
 
 // testing a vertex that has neighbors
 QUnit.test('find the neighbors of a vertex', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
+  console.log(graph);
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
+  console.log(graph);
   graph.addEdge('a', new UndirectedEdge(2), 'b');
+  console.log(graph);
   graph.addEdge('b', new UndirectedEdge(7), 'c');
   graph.addEdge('a', new UndirectedEdge(8), 'c');
+  console.log(graph);
   assert.deepEqual(graph.getNeighbors('a'), ['b', 'c']);
 });
 
 // Test if the class method getNeighbors return all getNeighbors
 // that aren't connected
 QUnit.test('find the nonconnected neighbors of a vertex', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -57,7 +56,7 @@ QUnit.test('find the nonconnected neighbors of a vertex', (assert) => {
 
 // testing a self edge
 QUnit.test('retrieve a nonexistent self edge', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -71,7 +70,7 @@ QUnit.test('retrieve a nonexistent self edge', (assert) => {
 
 // testing edges that don't exist
 QUnit.test('retrieve a nonexistent edge given two vertices', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -84,7 +83,7 @@ QUnit.test('retrieve a nonexistent edge given two vertices', (assert) => {
 // Testing if the class method getEdge returns undefined
 // when a self edge was created
 QUnit.test('retrieve an existent self edge as undefined', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addEdge('a', new UndirectedEdge(2), 'a');
@@ -93,7 +92,7 @@ QUnit.test('retrieve an existent self edge as undefined', (assert) => {
 
 // testing an edge that does exist
 QUnit.test('retrieve an edge given two vertices', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -106,7 +105,7 @@ QUnit.test('retrieve an edge given two vertices', (assert) => {
 });
 
 QUnit.test('find a path from a vertex to itself', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -117,7 +116,7 @@ QUnit.test('find a path from a vertex to itself', (assert) => {
 });
 
 QUnit.test('find a path from a vertex to a neighbor with no shortcuts available', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -128,7 +127,7 @@ QUnit.test('find a path from a vertex to a neighbor with no shortcuts available'
 });
 
 QUnit.test('find a path from a vertex to a neighbor with a shortcut available', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -139,7 +138,7 @@ QUnit.test('find a path from a vertex to a neighbor with a shortcut available', 
 });
 
 QUnit.test('find a nonexistent path', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -148,7 +147,7 @@ QUnit.test('find a nonexistent path', (assert) => {
 });
 
 QUnit.test('finding a path from the last vertex with a shortcut available', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('a');
   graph.addVertex('b');
   graph.addVertex('c');
@@ -161,7 +160,7 @@ QUnit.test('finding a path from the last vertex with a shortcut available', (ass
 /* The following weighted test cases test finding the shortest path to a vertex when projections exist of that vertex */
 
 QUnit.test('first weighted graph test case for projections', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('s');
   graph.addVertex('t');
   graph.addVertex('t\'');
@@ -171,7 +170,7 @@ QUnit.test('first weighted graph test case for projections', (assert) => {
 });
 
 QUnit.test('second weighted graph test case for projections', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('s');
   graph.addVertex('t');
   graph.addVertex('t\'');
@@ -181,7 +180,7 @@ QUnit.test('second weighted graph test case for projections', (assert) => {
 });
 
 QUnit.test('third weighted graph test case for projections', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('s');
   graph.addVertex('t');
   graph.addVertex('t\'');
@@ -193,7 +192,7 @@ QUnit.test('third weighted graph test case for projections', (assert) => {
 });
 
 QUnit.test('fourth weighted graph test case for projections', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('s');
   graph.addVertex('t');
   graph.addVertex('u');
@@ -205,7 +204,7 @@ QUnit.test('fourth weighted graph test case for projections', (assert) => {
 });
 
 QUnit.test('fifth weighted graph test case for projections', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('s');
   graph.addVertex('t');
   graph.addVertex('u');
@@ -217,7 +216,7 @@ QUnit.test('fifth weighted graph test case for projections', (assert) => {
 });
 
 QUnit.test('sixth weighted graph test case for projections', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('s');
   graph.addVertex('t');
   graph.addVertex('t\'');
@@ -231,7 +230,7 @@ QUnit.test('sixth weighted graph test case for projections', (assert) => {
 });
 
 QUnit.test('seventh weighted graph test case for projections', (assert) => {
-  const graph = new UndirectedGraph(hashFunction);
+  const graph = new UndirectedGraph();
   graph.addVertex('s');
   graph.addVertex('t');
   graph.addVertex('c');
