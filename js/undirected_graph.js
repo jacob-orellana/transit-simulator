@@ -35,6 +35,8 @@ class UndirectedGraph {
   }
 
   addEdge(source, edge, destination) {
+    console.assert(this.vertices.includes(source), 'Vertex does not exist in the graph.');
+    console.assert(this.vertices.includes(destination), 'Vertex does not exist in the graph.');
     const sourceBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(source)];
     const destinationBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(destination)];
     if (source !== destination){
@@ -52,7 +54,6 @@ class UndirectedGraph {
 
   getNeighbors(vertex) {
     const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(vertex.name)][0];
-    console.log(bucket);
     const result = [];
     if (bucket[1] !== undefined) {
       for (let i = 1; i < bucket.length; ++i) {
@@ -76,6 +77,9 @@ class UndirectedGraph {
           result = Object.entries(vertex)[0][1];
         }
       }
+    }
+    if (result === undefined){
+      return new UndirectedEdge(Infinity);
     }
     return result;
   }

@@ -61,7 +61,7 @@ QUnit.test('find the nonconnected neighbors of a vertex', (assert) => {
   graph.addEdge(a, new UndirectedEdge(3), b);
   graph.addEdge(a, new UndirectedEdge(5), d);
   graph.addEdge(a, new UndirectedEdge(4), c);
-  assert.deepEqual(graph.getNeighbors(a).sort(), ['b', 'c', 'd']);
+  assert.deepEqual(graph.getNeighbors(a).sort(), [b, c, d]);
 });
 
 // testing a self edge
@@ -70,7 +70,6 @@ QUnit.test('retrieve a nonexistent self edge', (assert) => {
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);
@@ -88,7 +87,6 @@ QUnit.test('retrieve a nonexistent edge given two vertices', (assert) => {
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);
@@ -104,8 +102,6 @@ QUnit.test('retrieve an existent self edge as undefined', (assert) => {
   const graph = new UndirectedGraph();
   const a = new Vertex('a');
   const b = new Vertex('b');
-  const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addEdge(a, new UndirectedEdge(2), a);
@@ -118,7 +114,6 @@ QUnit.test('retrieve an edge given two vertices', (assert) => {
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);
@@ -143,7 +138,7 @@ QUnit.test('find a path from a vertex to itself', (assert) => {
   graph.addEdge(a, new UndirectedEdge(2), b);
   graph.addEdge(b, new UndirectedEdge(7), c);
   graph.addEdge(a, new UndirectedEdge(8), c);
-  assert.deepEqual(shortestUndirectedPath(graph, a, (vertex) => vertex === a), []);
+  assert.deepEqual(shortestUndirectedPath(graph, a, (vertex) => vertex === a), [a]);
 });
 
 QUnit.test('find a path from a vertex to a neighbor with no shortcuts available', (assert) => {
@@ -151,7 +146,6 @@ QUnit.test('find a path from a vertex to a neighbor with no shortcuts available'
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);
@@ -166,7 +160,6 @@ QUnit.test('find a path from a vertex to a neighbor with a shortcut available', 
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);
@@ -181,7 +174,6 @@ QUnit.test('find a nonexistent path', (assert) => {
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);
@@ -194,7 +186,6 @@ QUnit.test('finding a path from the last vertex with a shortcut available', (ass
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);
@@ -208,30 +199,28 @@ QUnit.test('finding a path from the last vertex with a shortcut available', (ass
 
 QUnit.test('first weighted graph test case for projections', (assert) => {
   const graph = new UndirectedGraph();
-  const a = new Vertex('a');
-  const b = new Vertex('b');
-  const c = new Vertex('c');
-  const d = new Vertex('d');
-  graph.addVertex('s');
-  graph.addVertex('t');
-  graph.addVertex('t\'');
-  graph.addEdge('s', new UndirectedEdge(5), 't\'');
-  graph.addEdge('s', new UndirectedEdge(1), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't'), ['s', 't']);
+  const s = new Vertex('s');
+  const t = new Vertex('t');
+  const tp = new Vertex('t\'');
+  graph.addVertex(s);
+  graph.addVertex(t);
+  graph.addVertex(tp);
+  graph.addEdge(s, new UndirectedEdge(5), tp);
+  graph.addEdge(s, new UndirectedEdge(1), t);
+  assert.deepEqual(shortestUndirectedPath(graph, s, (vertex) => vertex === t), [s, t]);
 });
 
 QUnit.test('second weighted graph test case for projections', (assert) => {
   const graph = new UndirectedGraph();
-  const a = new Vertex('a');
-  const b = new Vertex('b');
-  const c = new Vertex('c');
-  const d = new Vertex('d');
-  graph.addVertex('s');
-  graph.addVertex('t');
-  graph.addVertex('t\'');
-  graph.addEdge('s', new UndirectedEdge(1), 't\'');
-  graph.addEdge('s', new UndirectedEdge(2), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 't\'' || vertex === 't'), undefined);
+  const s = new Vertex('s');
+  const t = new Vertex('t');
+  const tp = new Vertex('t\'');
+  graph.addVertex(s);
+  graph.addVertex(t);
+  graph.addVertex(tp);
+  graph.addEdge(s, new UndirectedEdge(1), tp);
+  graph.addEdge(s, new UndirectedEdge(2), t);
+  assert.deepEqual(shortestUndirectedPath(graph, s, (vertex) => vertex === t, (vertex) => vertex === tp || vertex === t), undefined);
 });
 
 QUnit.test('third weighted graph test case for projections', (assert) => {
