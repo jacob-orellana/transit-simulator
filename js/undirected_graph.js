@@ -52,7 +52,6 @@ class UndirectedGraph {
 
   getNeighbors(vertex) {
     const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(vertex.name)][0];
-    console.log(bucket);
     const result = [];
     if (bucket[1] !== undefined) {
       for (let i = 1; i < bucket.length; ++i) {
