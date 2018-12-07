@@ -225,68 +225,69 @@ QUnit.test('second weighted graph test case for projections', (assert) => {
 
 QUnit.test('third weighted graph test case for projections', (assert) => {
   const graph = new UndirectedGraph();
-  const a = new Vertex('a');
-  const b = new Vertex('b');
+  const s = new Vertex('s');
+  const t = new Vertex('t');
+  const tp = new Vertex('t\'');
   const c = new Vertex('c');
-  const d = new Vertex('d');
-  graph.addVertex('s');
-  graph.addVertex('t');
-  graph.addVertex('t\'');
+  graph.addVertex(s);
+  graph.addVertex(t);
+  graph.addVertex(tp);
   graph.addVertex(c);
-  graph.addEdge(c, new UndirectedEdge(1), 't\'');
-  graph.addEdge(c, new UndirectedEdge(2), 't');
-  graph.addEdge('s', new UndirectedEdge(1), c);
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 't\''), undefined);
+  graph.addEdge(c, new UndirectedEdge(1), tp);
+  graph.addEdge(c, new UndirectedEdge(2), t);
+  graph.addEdge(s, new UndirectedEdge(1), c);
+  assert.deepEqual(shortestUndirectedPath(graph, s, (vertex) => vertex === t, (vertex) => vertex === tp), undefined);
 });
 
 QUnit.test('fourth weighted graph test case for projections', (assert) => {
   const graph = new UndirectedGraph();
-  const a = new Vertex('a');
-  const b = new Vertex('b');
-  const c = new Vertex('c');
-  const d = new Vertex('d');
-  graph.addVertex('s');
-  graph.addVertex('t');
-  graph.addVertex('u');
-  graph.addVertex('u\'');
-  graph.addEdge('s', new UndirectedEdge(1), 'u');
-  graph.addEdge('s', new UndirectedEdge(2), 'u\'');
-  graph.addEdge('u\'', new UndirectedEdge(2), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 'u\''), undefined);
+  const s = new Vertex('s');
+  const t = new Vertex('t');
+  const u = new Vertex('u');
+  const up = new Vertex('u\'');
+  graph.addVertex(s);
+  graph.addVertex(t);
+  graph.addVertex(u);
+  graph.addVertex(up);
+  graph.addEdge(s, new UndirectedEdge(1), u);
+  graph.addEdge(s, new UndirectedEdge(2), up);
+  graph.addEdge(up, new UndirectedEdge(2), t);
+  assert.deepEqual(shortestUndirectedPath(graph, s, (vertex) => vertex === t, (vertex) => vertex === up), undefined);
 });
 
 QUnit.test('fifth weighted graph test case for projections', (assert) => {
   const graph = new UndirectedGraph();
-  const a = new Vertex('a');
-  const b = new Vertex('b');
-  const c = new Vertex('c');
-  const d = new Vertex('d');
-  graph.addVertex('s');
-  graph.addVertex('t');
-  graph.addVertex('u');
-  graph.addVertex('t\'');
-  graph.addEdge('s', new UndirectedEdge(1), 'u');
-  graph.addEdge('u', new UndirectedEdge(2), 't\'');
-  graph.addEdge('s', new UndirectedEdge(4), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 't\''), undefined);
+  const s = new Vertex('s');
+  const t = new Vertex('t');
+  const u = new Vertex('u');
+  const tp = new Vertex('t\'');
+  graph.addVertex(s);
+  graph.addVertex(t);
+  graph.addVertex(u);
+  graph.addVertex(tp);
+  graph.addEdge(s, new UndirectedEdge(1), u);
+  graph.addEdge(u, new UndirectedEdge(2), tp);
+  graph.addEdge(s, new UndirectedEdge(4), t);
+  assert.deepEqual(shortestUndirectedPath(graph, s, (vertex) => vertex === t, (vertex) => vertex === tp), undefined);
 });
 
 QUnit.test('sixth weighted graph test case for projections', (assert) => {
   const graph = new UndirectedGraph();
-  const a = new Vertex('a');
-  const b = new Vertex('b');
+  const s = new Vertex('s');
+  const t = new Vertex('t');
+  const tp = new Vertex('t\'');
   const c = new Vertex('c');
-  const d = new Vertex('d');
-  graph.addVertex('s');
-  graph.addVertex('t');
-  graph.addVertex('t\'');
+  const b = new Vertex('b')
+  graph.addVertex(s);
+  graph.addVertex(t);
+  graph.addVertex(tp);
   graph.addVertex(c);
   graph.addVertex(b);
-  graph.addEdge('s', new UndirectedEdge(1), c);
-  graph.addEdge('s', new UndirectedEdge(4), b);
-  graph.addEdge(c, new UndirectedEdge(2), 't\'');
-  graph.addEdge(b, new UndirectedEdge(2), 't');
-  assert.deepEqual(shortestUndirectedPath(graph, 's', (vertex) => vertex === 't', (vertex) => vertex === 't\''), undefined);
+  graph.addEdge(s, new UndirectedEdge(1), c);
+  graph.addEdge(s, new UndirectedEdge(4), b);
+  graph.addEdge(c, new UndirectedEdge(2), tp);
+  graph.addEdge(b, new UndirectedEdge(2), t);
+  assert.deepEqual(shortestUndirectedPath(graph, s, (vertex) => vertex === t, (vertex) => vertex === tp), undefined);
 });
 
 QUnit.test('seventh weighted graph test case for projections', (assert) => {
