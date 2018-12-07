@@ -51,17 +51,13 @@ class UndirectedGraph {
   }
 
   getNeighbors(vertex) {
-    const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(vertex)][0];
+    const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(vertex.name)][0];
+    console.log(bucket);
     const result = [];
     if (bucket[1] !== undefined) {
       for (let i = 1; i < bucket.length; ++i) {
-        if (typeof bucket[i] === 'object'){
-          const neighbor = Object.entries(bucket[i])[0][0];
-          console.log(Object.entries(bucket[i])[0][0])
-          if (this.vertices.includes(neighbor)){
-            result.push(neighbor);
-          }
-        }
+        const values = Object.entries(bucket[i])[0][0];
+        result.push(this.hashGraph._buckets[this.hashGraph._hashFunction(values)][0][0]);
       }
     }
     return result;
@@ -69,7 +65,6 @@ class UndirectedGraph {
 
   getEdge(source, destination) {
     const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(source)][0];
-    console.log(this.vertices)
     console.assert(this.vertices.includes(source), 'Graph does not have that vertex source.');
     console.assert(this.vertices.includes(destination), 'Graph does not have that vertex destination.');
     let result = undefined;

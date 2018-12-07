@@ -43,7 +43,7 @@ QUnit.test('find the neighbors of a vertex', (assert) => {
   graph.addEdge(a, new UndirectedEdge(2), b);
   graph.addEdge(b, new UndirectedEdge(7), c);
   graph.addEdge(a, new UndirectedEdge(8), c);
-  assert.deepEqual(graph.getNeighbors(a), ['b', 'c']);
+  assert.deepEqual(graph.getNeighbors(a), [b, c]);
 });
 
 // Test if the class method getNeighbors return all getNeighbors
@@ -137,14 +137,13 @@ QUnit.test('find a path from a vertex to itself', (assert) => {
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);
   graph.addEdge(a, new UndirectedEdge(2), b);
   graph.addEdge(b, new UndirectedEdge(7), c);
   graph.addEdge(a, new UndirectedEdge(8), c);
-  assert.deepEqual(shortestUndirectedPath(graph, a, (vertex) => vertex === a), [a]);
+  assert.deepEqual(shortestUndirectedPath(graph, a, (vertex) => vertex === a), []);
 });
 
 QUnit.test('find a path from a vertex to a neighbor with no shortcuts available', (assert) => {
