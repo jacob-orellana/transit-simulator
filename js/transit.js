@@ -378,11 +378,6 @@ class Bus extends Agent {
   getETA(vertex, minimumETA = 0.0) {
     let result = this.eta;
     if (result === undefined) {
-      // console.log(this._arc);
-      // console.log(this._arc.edge);
-      // const source = this._arc._source;
-      // const destination = this._arc._destination;
-      // result = this._arc.route.city.driveGraph.getEdge(source, destination);
       result = this._arc.edge.weight;
     }
     if (this.stopping) {
@@ -545,9 +540,7 @@ class PlanningGraph {
   getNeighbors(vertex) {
     const result = [];
     for (const neighbor of this.city.walkGraph.getNeighbors(vertex.destination)) {
-      console.log(neighbor)
       const edge = this.city.walkGraph.getEdge(vertex.destination, neighbor);
-      console.log(edge)
       result.push(new PlanningVertex(undefined, neighbor, vertex.eta + edge.weight));
     }
     for (const route of this.city.routes) {

@@ -36,7 +36,6 @@ QUnit.test('find the neighbors of a vertex', (assert) => {
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   graph.addVertex(a);
   graph.addVertex(b);
   graph.addVertex(c);

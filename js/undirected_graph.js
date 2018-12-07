@@ -30,58 +30,26 @@ class UndirectedGraph {
 
   addVertex(vertex) {
     console.assert(!this.vertices.includes(vertex), 'Vertex already exists in the graph.');
-    this.hashGraph.set(vertex);
+    this.hashGraph.set(vertex, new HashTable(this.hashGraph._hashFunction));
     this.vertices.push(vertex);
   }
 
   addEdge(source, edge, destination) {
     console.assert(this.vertices.includes(source), 'Vertex does not exist in the graph.');
     console.assert(this.vertices.includes(destination), 'Vertex does not exist in the graph.');
-    const sourceBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(source)];
-    const destinationBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(destination)];
     if (source !== destination){
-      // if (sourceBucket[0][1] === undefined){
-      //   sourceBucket[0].pop();
-      // }
-      // if (destinationBucket[0][1] === undefined){
-      //   destinationBucket[0].pop();
-      // }
-      sourceBucket[0].push({[destination]: edge});
-      destinationBucket[0].push({[source]: edge});
+      this.hashGraph.get(source).set(destination, edge);
+      this.hashGraph.get(destination).set(source, edge.reverse());
       this.edges.push(edge);
     }
   }
 
   getNeighbors(vertex) {
-    const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(vertex.name)][0];
-    const result = [];
-    if (bucket[1] !== undefined) {
-      for (let i = 1; i < bucket.length; ++i) {
-        const values = Object.entries(bucket[i])[0][0];
-        result.push(this.hashGraph._buckets[this.hashGraph._hashFunction(values)][0][0]);
-      }
-    }
-    return result;
+    return this.hashGraph.get(vertex).keys;
   }
 
   getEdge(source, destination) {
-    const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(source)][0];
-    console.assert(this.vertices.includes(source), 'Graph does not have that vertex source.');
-    console.assert(this.vertices.includes(destination), 'Graph does not have that vertex destination.');
-    let result = undefined;
-    if (bucket[1] !== undefined){
-      let vertex = '';
-      for (let i = 1; i < bucket.length; ++i){
-        vertex = bucket[i];
-        if (destination.name === Object.entries(vertex)[0][0]){
-          result = Object.entries(vertex)[0][1];
-        }
-      }
-    }
-    if (result === undefined){
-      return new UndirectedEdge(Infinity);
-    }
-    return result;
+    return this.hashGraph.get(source).get(destination);
   }
 }
 

@@ -42,6 +42,7 @@ class HashTable {
   constructor(hashFunction) {
     this._hashFunction = (element) => mod(hashFunction(element), this._buckets.length);
     this.clear();
+    this.keys = [];
   }
 
   clear() {
@@ -78,6 +79,7 @@ class HashTable {
   }
 
   set(key, value) {
+    this.keys.push(key);
     const bucket = this._buckets[this._hashFunction(key)];
     const index = bucket.findIndex((pair) => pair[0] === key);
     if (index >= 0) {
@@ -93,6 +95,7 @@ class HashTable {
   }
 
   delete(key) {
+    this.keys.pop(key);
     const bucket = this._buckets[this._hashFunction(key)];
     const index = bucket.findIndex((pair) => pair[0] === key);
     if (index >= 0) {
