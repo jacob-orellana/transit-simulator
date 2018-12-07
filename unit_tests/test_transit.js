@@ -282,7 +282,10 @@ QUnit.test('get ETA of bus at location', (assert) => {
   graph.addVertex(b);
   graph.addEdge(a, new UndirectedEdge(2.0), b);
   const city = new City(graph, graph);
+  console.log(city);
   const route = new Route(city, a, b);
+  console.log(route);
+  console.log(route).getArc(a);
   const x = new Bus(route.getArc(a));
   assert.deepEqual(x.getETA(a), 0.0);
 });

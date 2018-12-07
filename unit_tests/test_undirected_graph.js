@@ -98,11 +98,13 @@ QUnit.test('retrieve an edge given two vertices', (assert) => {
   graph.addVertex('b');
   graph.addVertex('c');
   const edge = new UndirectedEdge(2);
+  const edgeTwo = new UndirectedEdge(7);
   graph.addEdge('a', edge, 'b');
-  graph.addEdge('b', new UndirectedEdge(7), 'c');
+  graph.addEdge('b', edgeTwo, 'c');
   graph.addEdge('a', new UndirectedEdge(8), 'c');
   assert.deepEqual(graph.getEdge('a', 'b'), edge);
   assert.deepEqual(graph.getEdge('b', 'a'), edge);
+  assert.deepEqual(graph.getEdge('b', 'c'), edgeTwo);
 });
 
 QUnit.test('find a path from a vertex to itself', (assert) => {
