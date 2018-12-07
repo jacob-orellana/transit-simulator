@@ -378,8 +378,8 @@ class Bus extends Agent {
   getETA(vertex, minimumETA = 0.0) {
     let result = this.eta;
     if (result === undefined) {
-      console.log(this._arc);
-      console.log(this._arc.edge);
+      // console.log(this._arc);
+      // console.log(this._arc.edge);
       // const source = this._arc._source;
       // const destination = this._arc._destination;
       // result = this._arc.route.city.driveGraph.getEdge(source, destination);

@@ -53,14 +53,15 @@ class UndirectedGraph {
   getNeighbors(vertex) {
     const bucket = this.hashGraph._buckets[this.hashGraph._hashFunction(vertex)][0];
     const result = [];
-    for (const entry of bucket) {
-      if (typeof entry === 'object'){
-        const neighbor = Object.entries(entry)[0][0];
-        if (this.vertices.includes(neighbor)){
+    if (bucket[1] !== undefined) {
+      for (let i = 1; i < bucket.length; ++i) {
+        if (typeof bucket[i] === 'object'){
+          const neighbor = Object.entries(bucket[i])[0][0];
           result.push(neighbor);
         }
       }
     }
+    console.log(result)
     return result;
   }
 
@@ -73,7 +74,7 @@ class UndirectedGraph {
       let vertex = '';
       for (let i = 1; i < bucket.length; ++i){
         vertex = bucket[i];
-        if (destination === Object.entries(vertex)[0][0]){
+        if (destination.name === Object.entries(vertex)[0][0]){
           result = Object.entries(vertex)[0][1];
         }
       }
