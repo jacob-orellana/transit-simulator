@@ -40,12 +40,12 @@ class UndirectedGraph {
     const sourceBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(source)];
     const destinationBucket = this.hashGraph._buckets[this.hashGraph._hashFunction(destination)];
     if (source !== destination){
-      if (sourceBucket[0][1] === undefined){
-        sourceBucket[0].pop();
-      }
-      if (destinationBucket[0][1] === undefined){
-        destinationBucket[0].pop();
-      }
+      // if (sourceBucket[0][1] === undefined){
+      //   sourceBucket[0].pop();
+      // }
+      // if (destinationBucket[0][1] === undefined){
+      //   destinationBucket[0].pop();
+      // }
       sourceBucket[0].push({[destination]: edge});
       destinationBucket[0].push({[source]: edge});
       this.edges.push(edge);
