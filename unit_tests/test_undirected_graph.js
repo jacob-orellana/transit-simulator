@@ -8,15 +8,12 @@ QUnit.module('undirected_graph.js');
   - the list of edges could be empty or contain edges
 */
 
-
-
 // testing a vertex that has no neighbors
 QUnit.test('find the nonexistent neighbors of a vertex', (assert) => {
   const graph = new UndirectedGraph();
   const a = new Vertex('a');
   const b = new Vertex('b');
   const c = new Vertex('c');
-  const d = new Vertex('d');
   // test whether the lists have no contents
   assert.deepEqual(graph.vertices.length, 0);
   assert.deepEqual(graph.edges.length, 0);
@@ -276,7 +273,7 @@ QUnit.test('sixth weighted graph test case for projections', (assert) => {
   const t = new Vertex('t');
   const tp = new Vertex('t\'');
   const c = new Vertex('c');
-  const b = new Vertex('b')
+  const b = new Vertex('b');
   graph.addVertex(s);
   graph.addVertex(t);
   graph.addVertex(tp);

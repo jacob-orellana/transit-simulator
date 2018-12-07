@@ -13,11 +13,6 @@ class UndirectedEdge {
   }
 }
 
-function hashFunction(letter) {
-  const value = 59 * (String(letter).codePointAt(0) || 0);
-  return value;
-}
-
 class UndirectedGraph {
   constructor(hashfunction = (letter) => {
     const value = 59 * (String(letter).codePointAt(0) || 0);
